@@ -2,16 +2,13 @@ package com.petr.petr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SpringBootApplication
-public class PetrApplication extends SpringBootServletInitializer {
+public class PetrApplication {
 
     public static void main(String[] args) {
         try {
@@ -21,10 +18,5 @@ public class PetrApplication extends SpringBootServletInitializer {
         }
         SpringApplication.run(PetrApplication.class, args);
 
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(PetrApplication.class);
     }
 }

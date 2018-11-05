@@ -4,13 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Data
@@ -18,26 +13,18 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails, GrantedAuthority {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role",nullable = false)
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role authority;
-
-    private Long parentId;
+    private Role role = Role.USER;
 
     @Column(nullable = false)
-    private boolean verify;
-
-    @Column(nullable = false,unique = true)
-    private String login;
-
-    @Column(nullable = false)
-    private String password;
+    private boolean verify = false;
 
     @Column(nullable = false)
     private String name;
@@ -49,18 +36,18 @@ public class User implements UserDetails, GrantedAuthority {
     private String patronymic;
 
     @Column(nullable = false)
-    private String birthDate;
+    private Long birthDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String INN;
+    @Column(nullable = false, unique = true)
+    private String inn;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String passport;
 
     @Column(nullable = false)
@@ -69,56 +56,24 @@ public class User implements UserDetails, GrantedAuthority {
     @Column(nullable = false)
     private String issuedWhen;
 
-    @Column(nullable = false)
     private String passwordFirstPage;
 
-    @Column(nullable = false)
     private String passwordSecondPage;
 
-    @Column(nullable = false)
     private String passwordLastPage;
 
-    @Column(nullable = false)
     private String photo;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new GrantedAuthority[]{(GrantedAuthority) this});
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Bank bank;
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+    @Column(nullable = false)
+    private String card;
 
-    @Override
-    public String getUsername() {
-        return login;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parentId_id")
+    private User parentId;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String getAuthority() {
-        return authority.toString();
-    }
 
 }

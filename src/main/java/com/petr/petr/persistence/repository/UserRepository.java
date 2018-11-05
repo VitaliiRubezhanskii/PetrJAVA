@@ -6,5 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    User findByLogin(String login);
+    boolean existsByPhone(String phone);
+
+    boolean existsByInn(String inn);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPassport(String passport);
 }
