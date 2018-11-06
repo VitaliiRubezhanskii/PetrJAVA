@@ -1,4 +1,4 @@
-package com.petr.petr.transport.dto;
+package com.petr.petr.transport.dto.user;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;

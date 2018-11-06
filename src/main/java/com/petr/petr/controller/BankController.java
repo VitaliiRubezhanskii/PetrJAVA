@@ -1,6 +1,6 @@
-package com.petr.petr.controller.admin;
+package com.petr.petr.controller;
 
-import com.petr.petr.service.BankService;
+import com.petr.petr.service.bank.BankService;
 import com.petr.petr.transport.dto.bank.BankCreateDto;
 import com.petr.petr.transport.dto.bank.BankFindDto;
 import com.petr.petr.transport.dto.bank.BankOutcomeDto;
@@ -21,7 +21,7 @@ public class BankController {
 
     //admin
     @GetMapping
-    public Page<BankOutcomeDto> getSchools(BankFindDto dto,
+    public Page<BankOutcomeDto> getBanks(BankFindDto dto,
                                            @PageableDefault(size = 5) Pageable pageable) {
         return bankService.getAll(dto, pageable);
     }

@@ -1,7 +1,7 @@
-package com.petr.petr.service;
+package com.petr.petr.service.user;
 
 import com.petr.petr.persistence.entity.User;
-import com.petr.petr.transport.dto.UserFindDto;
+import com.petr.petr.transport.dto.user.UserFindDto;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,6 +18,7 @@ public interface UserSearchSpecification {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "verify", dto.isVerify()));
+            predicates.add(toEqualsPredicate(root, criteriaBuilder, "deleted", dto.isDeleted()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "name", dto.getName()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "surname", dto.getSurname()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "patronymic", dto.getPatronymic()));

@@ -1,4 +1,4 @@
-package com.petr.petr.service;
+package com.petr.petr.service.bank;
 
 import com.petr.petr.persistence.entity.Bank;
 import com.petr.petr.transport.dto.bank.BankCreateDto;

@@ -1,4 +1,4 @@
-package com.petr.petr.service;
+package com.petr.petr.service.bank;
 
 import com.petr.petr.exception.BankExistsException;
 import com.petr.petr.exception.BankNotFoundException;

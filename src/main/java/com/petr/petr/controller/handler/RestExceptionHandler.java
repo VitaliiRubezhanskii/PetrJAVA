@@ -67,4 +67,9 @@ public class RestExceptionHandler {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
 
+    @ExceptionHandler(value = SurveyExistsException.class)
+    private String surveyExistsException(SurveyExistsException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
 }

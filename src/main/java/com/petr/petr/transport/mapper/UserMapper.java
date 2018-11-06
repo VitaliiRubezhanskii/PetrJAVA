@@ -1,10 +1,10 @@
 package com.petr.petr.transport.mapper;
 
 import com.petr.petr.persistence.entity.User;
-import com.petr.petr.service.BankService;
-import com.petr.petr.service.UserService;
-import com.petr.petr.transport.dto.UserCreateDto;
-import com.petr.petr.transport.dto.UserOutcomeDto;
+import com.petr.petr.service.bank.BankService;
+import com.petr.petr.service.user.UserService;
+import com.petr.petr.transport.dto.user.UserCreateDto;
+import com.petr.petr.transport.dto.user.UserOutcomeDto;
 import lombok.Data;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

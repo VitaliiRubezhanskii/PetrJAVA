@@ -1,4 +1,4 @@
-package com.petr.petr.transport.dto;
+package com.petr.petr.transport.dto.user;
 
 import com.petr.petr.persistence.entity.Role;
 import lombok.Data;
@@ -10,7 +10,9 @@ public class UserOutcomeDto {
 
     private Role role;
 
-    private boolean verify = false;
+    private boolean verify;
+
+    private boolean deleted;
 
     private String name;
 

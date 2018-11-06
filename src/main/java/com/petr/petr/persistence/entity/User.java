@@ -24,6 +24,9 @@ public class User {
     private Role role = Role.USER;
 
     @Column(nullable = false)
+    private boolean deleted = false;
+
+    @Column(nullable = false)
     private boolean verify = false;
 
     @Column(nullable = false)

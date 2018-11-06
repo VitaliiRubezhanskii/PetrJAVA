@@ -1,9 +1,9 @@
-package com.petr.petr.controller.user;
+package com.petr.petr.controller;
 
-import com.petr.petr.service.UserService;
-import com.petr.petr.transport.dto.UserCreateDto;
-import com.petr.petr.transport.dto.UserFindDto;
-import com.petr.petr.transport.dto.UserOutcomeDto;
+import com.petr.petr.service.user.UserService;
+import com.petr.petr.transport.dto.user.UserCreateDto;
+import com.petr.petr.transport.dto.user.UserFindDto;
+import com.petr.petr.transport.dto.user.UserOutcomeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +22,22 @@ public class UserController {
 
     //admin
     @GetMapping
-    public Page<UserOutcomeDto> getUsers(UserFindDto dto,
-                                         @PageableDefault(size = 5) Pageable pageable) {
+    public Page<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
         return userService.getAll(dto, pageable);
     }
 
     //admin
     @PostMapping(value = "/verify/{id}/{verify}")
-    public void setVerifyTrue(@PathVariable("id") Long id,
-                              @PathVariable("verify") boolean verify) {
+    public void setVerify(@PathVariable("id") Long id,
+                          @PathVariable("verify") boolean verify) {
         userService.setVerify(verify, id);
+    }
+
+    //admin
+    @PostMapping(value = "/deleted/{id}/{deleted}")
+    public void setDeleted(@PathVariable("id") Long id,
+                           @PathVariable("deleted") boolean verify) {
+        userService.setDeleted(verify, id);
     }
 
     //user

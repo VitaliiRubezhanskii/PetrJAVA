@@ -1,11 +1,11 @@
-package com.petr.petr.service;
+package com.petr.petr.service.user;
 
 import com.petr.petr.exception.*;
 import com.petr.petr.persistence.entity.User;
 import com.petr.petr.persistence.repository.UserRepository;
-import com.petr.petr.transport.dto.UserCreateDto;
-import com.petr.petr.transport.dto.UserFindDto;
-import com.petr.petr.transport.dto.UserOutcomeDto;
+import com.petr.petr.transport.dto.user.UserCreateDto;
+import com.petr.petr.transport.dto.user.UserFindDto;
+import com.petr.petr.transport.dto.user.UserOutcomeDto;
 import com.petr.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -139,6 +139,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void setDeleted(boolean delete, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        user.setDeleted(delete);
+        userRepository.save(user);
+    }
 
     private String savePhoto(MultipartFile multipartFile, User user) {
         String photoPath = null;
