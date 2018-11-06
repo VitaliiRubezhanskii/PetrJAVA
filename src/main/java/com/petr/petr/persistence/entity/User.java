@@ -62,6 +62,8 @@ public class User {
 
     private String passwordLastPage;
 
+    private String photoInn;
+
     private String photo;
 
     @ManyToOne

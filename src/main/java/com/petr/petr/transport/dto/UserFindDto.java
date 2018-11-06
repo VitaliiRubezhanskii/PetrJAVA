@@ -42,6 +42,8 @@ public class UserFindDto {
 
     private String photo;
 
+    private String photoInn;
+
     private Long bank;
 
     private String card;

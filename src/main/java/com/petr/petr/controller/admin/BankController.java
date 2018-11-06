@@ -1,4 +1,4 @@
-package com.petr.petr.controller;
+package com.petr.petr.controller.admin;
 
 import com.petr.petr.service.BankService;
 import com.petr.petr.transport.dto.bank.BankCreateDto;
@@ -19,14 +19,16 @@ public class BankController {
 
     private final BankService bankService;
 
+    //admin
     @GetMapping
     public Page<BankOutcomeDto> getSchools(BankFindDto dto,
                                            @PageableDefault(size = 5) Pageable pageable) {
         return bankService.getAll(dto, pageable);
     }
 
+    //admin
     @PutMapping
-    public Long create(@RequestBody @Valid BankCreateDto dto){
+    public Long create(@RequestBody @Valid BankCreateDto dto) {
         return bankService.create(dto);
     }
 }

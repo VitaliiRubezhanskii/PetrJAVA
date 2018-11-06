@@ -87,6 +87,59 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void addPasswordLastPage(MultipartFile multipartFile, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (user.getPasswordLastPage() != null) {
+            throw new PassportLastPageException();
+        }
+        String photoPath = savePhoto(multipartFile, user);
+        user.setPasswordLastPage(photoPath);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addPhotoInn(MultipartFile multipartFile, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (user.getPhotoInn() != null) {
+            throw new PhotoInnException();
+        }
+        String photoPath = savePhoto(multipartFile, user);
+        user.setPhotoInn(photoPath);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addPhoto(MultipartFile multipartFile, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (user.getPhoto() != null) {
+            throw new PhotoException();
+        }
+        String photoPath = savePhoto(multipartFile, user);
+        user.setPhoto(photoPath);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void setVerify(boolean verify, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        user.setVerify(verify);
+        userRepository.save(user);
+    }
+
+
     private String savePhoto(MultipartFile multipartFile, User user) {
         String photoPath = null;
         try {

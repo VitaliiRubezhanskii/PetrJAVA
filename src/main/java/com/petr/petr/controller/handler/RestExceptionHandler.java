@@ -27,6 +27,21 @@ public class RestExceptionHandler {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
 
+    @ExceptionHandler(value = PassportLastPageException.class)
+    private String passportLastPageException(PassportLastPageException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
+    @ExceptionHandler(value = PhotoInnException.class)
+    private String photoInnException(PhotoInnException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
+    @ExceptionHandler(value = PhotoException.class)
+    private String photoException(PhotoException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
     @ExceptionHandler(value = UserEmailExistsException.class)
     private String userEmailExistsException(UserEmailExistsException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());

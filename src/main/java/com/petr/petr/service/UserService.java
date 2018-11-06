@@ -21,5 +21,13 @@ public interface UserService {
 
     void addPasswordSecondPage(MultipartFile multipartFile, Long userId);
 
+    void addPasswordLastPage(MultipartFile multipartFile, Long userId);
+
+    void addPhotoInn(MultipartFile multipartFile, Long userId);
+
+    void addPhoto(MultipartFile multipartFile, Long userId);
+
+    void setVerify(boolean verify, Long userId);
+
     List<Long> getIdFromEntity(List<User> users);
 }

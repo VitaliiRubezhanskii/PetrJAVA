@@ -38,6 +38,8 @@ public class UserOutcomeDto {
 
     private String passwordLastPage;
 
+    private String photoInn;
+
     private String photo;
 
     private Long bank;
