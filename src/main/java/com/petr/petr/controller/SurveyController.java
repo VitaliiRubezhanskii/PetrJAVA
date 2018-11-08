@@ -1,9 +1,9 @@
 package com.petr.petr.controller;
 
 import com.petr.petr.service.survey.SurveyService;
-import com.petr.petr.transport.dto.SurveyCreateDto;
-import com.petr.petr.transport.dto.SurveyFindDto;
-import com.petr.petr.transport.dto.SurveyOutcomeDto;
+import com.petr.petr.transport.dto.survey.SurveyCreateDto;
+import com.petr.petr.transport.dto.survey.SurveyFindDto;
+import com.petr.petr.transport.dto.survey.SurveyOutcomeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

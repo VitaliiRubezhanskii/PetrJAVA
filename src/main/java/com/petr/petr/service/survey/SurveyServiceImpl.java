@@ -1,12 +1,12 @@
 package com.petr.petr.service.survey;
 
 import com.petr.petr.exception.SurveyExistsException;
-import com.petr.petr.persistence.entity.Bank;
+import com.petr.petr.exception.SurveyNotFoundException;
 import com.petr.petr.persistence.entity.Survey;
 import com.petr.petr.persistence.repository.SurveyRepository;
-import com.petr.petr.transport.dto.SurveyCreateDto;
-import com.petr.petr.transport.dto.SurveyFindDto;
-import com.petr.petr.transport.dto.SurveyOutcomeDto;
+import com.petr.petr.transport.dto.survey.SurveyCreateDto;
+import com.petr.petr.transport.dto.survey.SurveyFindDto;
+import com.petr.petr.transport.dto.survey.SurveyOutcomeDto;
 import com.petr.petr.transport.mapper.SurveyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +16,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
-    @Autowired
+
     private SurveyMapper surveyMapper;
 
     @Autowired
+    public void setSurveyMapper(SurveyMapper surveyMapper) {
+        this.surveyMapper = surveyMapper;
+    }
+
+    @Autowired
     private SurveyRepository surveyRepository;
+
+    @Override
+    public Survey getById(Long id) {
+        return surveyRepository.findById(id).orElseThrow(SurveyNotFoundException::new);
+    }
 
     @Override
     public Page<SurveyOutcomeDto> getAll(SurveyFindDto dto, Pageable pageable) {

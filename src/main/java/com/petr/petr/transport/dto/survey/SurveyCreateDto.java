@@ -1,4 +1,4 @@
-package com.petr.petr.transport.dto;
+package com.petr.petr.transport.dto.survey;
 
 import lombok.Data;
 

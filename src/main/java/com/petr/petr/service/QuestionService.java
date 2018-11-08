@@ -1,15 +1,21 @@
 package com.petr.petr.service;
 
-import com.petr.petr.transport.dto.SurveyCreateDto;
-import com.petr.petr.transport.dto.SurveyFindDto;
-import com.petr.petr.transport.dto.SurveyOutcomeDto;
+import com.petr.petr.persistence.entity.Question;
+import com.petr.petr.transport.dto.question.QuestionCreateDto;
+import com.petr.petr.transport.dto.question.QuestionFindDto;
+import com.petr.petr.transport.dto.question.QuestionOutcomeDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public interface QuestionService {
-//    Page<SurveyOutcomeDto> getAll(SurveyFindDto dto, Pageable pageable);
 
-    Long create(SurveyCreateDto dto);
+    Page<QuestionOutcomeDto> getAll(QuestionFindDto dto, Pageable pageable);
+
+    Long create(QuestionCreateDto dto, Long surveyId);
+
+    List<Long> getIdFromEntity(List<Question> questions);
 }
