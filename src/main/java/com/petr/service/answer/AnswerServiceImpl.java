@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AnswerServiceImpl implements AnswerService {
+public class AnswerServiceImpl extends AnswerSearchSpecification implements AnswerService {
 
     @Autowired
     private AnswerRepository answerRepository;
@@ -42,7 +42,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public Page<AnswerOutcomeDto> getAll(AnswerFindDto dto, Pageable pageable) {
         Page<Answer> result = answerRepository.findAll(
-                AnswerSearchSpecification.answerFilter(dto),
+                answerFilter(dto),
                 pageable
         );
         return result.map(answerMapper::toDto);

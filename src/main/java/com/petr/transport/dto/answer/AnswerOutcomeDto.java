@@ -12,4 +12,6 @@ public class AnswerOutcomeDto {
     private Boolean deleted;
 
     private Long question;
+
+    private Long date;
 }

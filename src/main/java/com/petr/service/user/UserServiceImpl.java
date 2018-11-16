@@ -8,12 +8,15 @@ import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
 import com.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends UserSearchSpecification implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -47,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserOutcomeDto> getAll(UserFindDto dto, Pageable pageable) {
         Page<User> result = userRepository.findAll(
-                UserSearchSpecification.userFilter(dto),
+                userFilter(dto),
                 pageable
         );
         return result.map(userMapper::toDto);
@@ -153,13 +156,10 @@ public class UserServiceImpl implements UserService {
     private String savePhoto(MultipartFile multipartFile, User user) {
         String photoPath = null;
         try {
-//            new BufferedOutputStream(new FileOutputStream(new File(footerImage)));
             Files.createDirectories(Paths.get(new File("./img2/" + user.getId()).getAbsolutePath()));
-//            Files.createDirectories(("/home/user/img2/" + user.getId()));
             byte[] bytes = multipartFile.getBytes();
-//            photoPath = "/home/user/img2/"
             photoPath = Paths.get(new File("img2/" + user.getId()).getAbsolutePath())
-                    +"/"
+                    + "/"
                     + String.valueOf(Instant.now().getEpochSecond())
                     + multipartFile.getOriginalFilename();
 

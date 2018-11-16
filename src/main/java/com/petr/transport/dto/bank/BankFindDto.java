@@ -15,4 +15,8 @@ public class BankFindDto {
     private String name;
 
     private List<Long> users;
+
+    private Long finishDate;
+
+    private Long startDate;
 }

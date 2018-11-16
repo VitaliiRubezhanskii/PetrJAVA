@@ -5,13 +5,16 @@ import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 
 @RestController
 @RequiredArgsConstructor

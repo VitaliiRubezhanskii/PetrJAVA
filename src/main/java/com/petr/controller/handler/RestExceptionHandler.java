@@ -96,4 +96,17 @@ public class RestExceptionHandler {
     private String answerExistsException(AnswerExistsException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
+
+    @ExceptionHandler(value = QuestionMinMaxException.class)
+    private String questionMinMaxException(QuestionMinMaxException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
+    @ExceptionHandler(value = QuestionNotCorrectException.class)
+    private String questionNotCorrectException(QuestionNotCorrectException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
+
+
 }

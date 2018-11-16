@@ -16,7 +16,17 @@ public class QuestionFindDto {
 
     private Long survey;
 
+    private Integer min;
+
+    private Integer max;
+
     private Boolean deleted;
 
     private List<Long> answers;
+
+    private Long finishDate;
+
+    private Long startDate;
+
+    private Boolean required;
 }

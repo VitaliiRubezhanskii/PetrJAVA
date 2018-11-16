@@ -12,4 +12,8 @@ public class AnswerFindDto {
     private Boolean deleted;
 
     private Long question;
+
+    private Long finishDate;
+
+    private Long startDate;
 }

@@ -14,4 +14,8 @@ public class SurveyFindDto {
     private Boolean deleted;
 
     private List<Long> questions;
+
+    private Long finishDate;
+
+    private Long startDate;
 }

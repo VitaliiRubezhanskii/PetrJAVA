@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -69,6 +71,8 @@ public class User {
 
     private String photo;
 
+    private Long date = new Date().getTime();
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Bank bank;
@@ -80,5 +84,7 @@ public class User {
     @JoinColumn(name = "parentId_id")
     private User parentId;
 
+    @OneToMany(mappedBy = "user")
+    private List<SurveyResult> surveyResults;
 
 }

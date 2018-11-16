@@ -14,4 +14,6 @@ public class BankOutcomeDto {
     private String name;
 
     private List<Long> users;
+
+    private Long date;
 }

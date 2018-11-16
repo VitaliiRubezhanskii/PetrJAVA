@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BankServiceImpl implements BankService {
+public class BankServiceImpl extends BankSearchSpecification implements BankService {
 
     @Autowired
     private BankRepository bankRepository;
@@ -39,7 +39,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public Page<BankOutcomeDto> getAll(BankFindDto dto, Pageable pageable) {
         Page<Bank> result = bankRepository.findAll(
-                BankSearchSpecification.bankFilter(dto),
+                bankFilter(dto),
                 pageable
         );
         return result.map(bankMapper::toDto);

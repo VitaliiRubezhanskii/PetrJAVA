@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -21,6 +22,8 @@ public class Answer {
     private String text;
 
     private boolean deleted = true;
+
+    private Long date =new Date().getTime();
 
     @ManyToOne
     @JoinColumn(name = "question_id")

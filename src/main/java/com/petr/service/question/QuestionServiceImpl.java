@@ -1,8 +1,10 @@
 package com.petr.service.question;
 
 import com.petr.exception.QuestionExistsException;
+import com.petr.exception.QuestionMinMaxException;
 import com.petr.exception.QuestionNotFoundException;
 import com.petr.persistence.entity.Question;
+import com.petr.persistence.entity.QuestionType;
 import com.petr.persistence.entity.Survey;
 import com.petr.persistence.repository.QuestionRepository;
 import com.petr.service.survey.SurveyService;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class QuestionServiceImpl implements QuestionService {
+public class QuestionServiceImpl extends QuestionSearchSpecification implements QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -43,7 +45,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Page<QuestionOutcomeDto> getAll(QuestionFindDto dto, Pageable pageable) {
         Page<Question> result = questionRepository.findAll(
-                QuestionSearchSpecification.questionFilter(dto),
+                questionFilter(dto),
                 pageable
         );
         return result.map(questionMapper::toDto);
@@ -61,6 +63,14 @@ public class QuestionServiceImpl implements QuestionService {
     private void validateQuestion(QuestionCreateDto dto, Long surveyId) {
         if (questionRepository.existsByTextAndSurveyId(dto.getText(), surveyId)) {
             throw new QuestionExistsException();
+        }
+        if (dto.getMin()>dto.getMax()){
+            throw  new QuestionMinMaxException();
+        }
+        if (dto.getType().equals(QuestionType.TEXT)){
+            if (dto.getMin()>1&&dto.getMax()>1){
+                throw new QuestionExistsException();
+            }
         }
     }
 

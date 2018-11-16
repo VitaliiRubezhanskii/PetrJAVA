@@ -22,6 +22,8 @@ public class UserOutcomeDto {
 
     private Long birthDate;
 
+    private Long date;
+
     private String phone;
 
     private String email;

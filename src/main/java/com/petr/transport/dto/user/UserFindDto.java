@@ -20,9 +20,13 @@ public class UserFindDto {
 
     private String patronymic;
 
-    private Long StartBirthDate;
+    private Long startBirthDate;
 
-    private Long FinishBirthDate;
+    private Long finishBirthDate;
+
+    private Long startDate;
+
+    private Long finishDate;
 
     private String phone;
 

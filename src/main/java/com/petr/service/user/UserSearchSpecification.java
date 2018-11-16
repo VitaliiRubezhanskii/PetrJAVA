@@ -1,19 +1,19 @@
 package com.petr.service.user;
 
 import com.petr.persistence.entity.User;
+import com.petr.service.AbstractSearchSpecification;
 import com.petr.transport.dto.user.UserFindDto;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public interface UserSearchSpecification {
-    static Specification<User> userFilter(UserFindDto dto) {
+public abstract class UserSearchSpecification extends AbstractSearchSpecification<User> {
+
+    public  Specification<User> userFilter(UserFindDto dto) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
@@ -23,6 +23,7 @@ public interface UserSearchSpecification {
             predicates.add(toLikePredicate(root, criteriaBuilder, "surname", dto.getSurname()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "patronymic", dto.getPatronymic()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "birthDate", dto.getStartBirthDate(), dto.getFinishBirthDate()));
+            predicates.add(toPredicateBetween(root, criteriaBuilder, "date", dto.getStartDate(), dto.getFinishDate()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "phone", dto.getPhone()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "email", dto.getEmail()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "inn", dto.getInn()));
@@ -41,22 +42,5 @@ public interface UserSearchSpecification {
             Object[] rawPredicates = predicates.stream().filter(Objects::nonNull).toArray();
             return criteriaBuilder.and(Arrays.copyOf(rawPredicates, rawPredicates.length, Predicate[].class));
         };
-    }
-
-    static Predicate toEqualsPredicate(Root<User> root, CriteriaBuilder criteriaBuilder, String param, Object paramValue) {
-        return paramValue != null ? criteriaBuilder.equal(root.get(param), paramValue) : null;
-    }
-
-    static Predicate toLikePredicate(Root<User> root, CriteriaBuilder criteriaBuilder, String param, Object paramValue) {
-        return paramValue != null ? criteriaBuilder.like(root.get(param), "%" + paramValue + "%") : null;
-    }
-
-    static Predicate toEqualsPredicateId(Root<User> root, CriteriaBuilder criteriaBuilder, String param, Long paramValue) {
-        return paramValue != null ? criteriaBuilder.equal(root.get(param).get("id"), paramValue) : null;
-    }
-
-     static Predicate toPredicateBetween(Root<User> root, CriteriaBuilder criteriaBuilder, String param,
-                                                Long paramValueFrom, Long paramValueTo) {
-        return (paramValueFrom != null && paramValueTo != null) ? criteriaBuilder.between(root.get(param), paramValueFrom, paramValueTo) : null;
     }
 }

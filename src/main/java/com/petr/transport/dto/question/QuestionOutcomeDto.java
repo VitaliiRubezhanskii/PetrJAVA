@@ -16,7 +16,15 @@ public class QuestionOutcomeDto {
 
     private Long survey;
 
+    private Integer min;
+
+    private Integer max;
+
     private boolean deleted ;
 
     private List<Long> answers;
+
+    private Long date;
+
+    private Boolean required;
 }

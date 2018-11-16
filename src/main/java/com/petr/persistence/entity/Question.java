@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,6 +26,14 @@ public class Question {
 
     @Enumerated(EnumType.STRING)
     private QuestionType type;
+
+    private Integer min;
+
+    private Integer max;
+
+    private Boolean required;
+
+    private Long date = new Date().getTime();
 
     @ManyToOne
     @JoinColumn(name = "survey_id")

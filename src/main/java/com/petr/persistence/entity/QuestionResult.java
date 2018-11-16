@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,20 +13,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bank {
+public class QuestionResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "id_question")
+    private Question question;
 
-    private Long date =new Date().getTime();
+    @ManyToOne
+    @JoinColumn(name = "id_surveyResult")
+    private SurveyResult surveyResult;
 
-    @Column(nullable = false)
-    private boolean visible = true;
-
-    @OneToMany(mappedBy = "bank")
-    private List<User> users;
+    @OneToMany(mappedBy = "questionResult")
+    private List<AnswerResult> answerResults;
 }
