@@ -21,9 +21,11 @@ public class Answer {
 
     private String text;
 
-    private boolean deleted = true;
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.UNPUBLISH;
 
-    private Long date =new Date().getTime();
+    private Long date = new Date().getTime();
 
     @ManyToOne
     @JoinColumn(name = "question_id")

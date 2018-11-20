@@ -1,6 +1,7 @@
 package com.petr.transport.dto.question;
 
 import com.petr.persistence.entity.QuestionType;
+import com.petr.persistence.entity.Status;
 import lombok.Data;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class QuestionOutcomeDto {
 
     private Integer max;
 
-    private boolean deleted ;
+    private Status status;
 
     private List<Long> answers;
 

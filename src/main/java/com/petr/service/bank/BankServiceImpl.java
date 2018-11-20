@@ -1,7 +1,7 @@
 package com.petr.service.bank;
 
-import com.petr.exception.BankExistsException;
-import com.petr.exception.BankNotFoundException;
+import com.petr.exception.bank.BankExistsException;
+import com.petr.exception.bank.BankNotFoundException;
 import com.petr.persistence.entity.Bank;
 import com.petr.persistence.repository.BankRepository;
 import com.petr.transport.dto.bank.BankCreateDto;

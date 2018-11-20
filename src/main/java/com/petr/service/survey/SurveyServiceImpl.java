@@ -1,8 +1,8 @@
 package com.petr.service.survey;
 
-import com.petr.exception.SurveyExistsException;
-import com.petr.exception.SurveyNotFoundException;
-import com.petr.persistence.entity.Survey;
+import com.petr.exception.survey.SurveyExistsException;
+import com.petr.exception.survey.SurveyNotFoundException;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.repository.SurveyRepository;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;

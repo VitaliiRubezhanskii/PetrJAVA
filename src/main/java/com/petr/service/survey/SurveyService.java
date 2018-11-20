@@ -1,6 +1,6 @@
 package com.petr.service.survey;
 
-import com.petr.persistence.entity.Survey;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
 import com.petr.transport.dto.survey.SurveyOutcomeDto;

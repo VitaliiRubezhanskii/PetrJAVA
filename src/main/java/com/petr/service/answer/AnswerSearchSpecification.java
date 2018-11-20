@@ -16,7 +16,7 @@ public abstract class AnswerSearchSpecification extends AbstractSearchSpecificat
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
-            predicates.add(toEqualsPredicate(root, criteriaBuilder, "deleted", dto.getDeleted()));
+            predicates.add(toEqualsPredicate(root, criteriaBuilder, "status", dto.getStatus()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "text", dto.getText()));
             predicates.add(toEqualsPredicateId(root, criteriaBuilder, "question", dto.getQuestion()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "date", dto.getStartDate(), dto.getFinishDate()));

@@ -1,5 +1,6 @@
 package com.petr.persistence.entity;
 
+import com.petr.persistence.entity.survey.Survey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,9 @@ public class Question {
 
     private String text;
 
-    private boolean deleted = true;
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.UNPUBLISH;
 
     @Enumerated(EnumType.STRING)
     private QuestionType type;

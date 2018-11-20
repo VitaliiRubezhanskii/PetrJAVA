@@ -1,22 +1,22 @@
 package com.petr.service.user;
 
-import com.petr.exception.*;
+import com.petr.exception.bank.BankNotVisibleException;
+import com.petr.exception.user.*;
+import com.petr.persistence.entity.Bank;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.repository.UserRepository;
+import com.petr.service.bank.BankService;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
 import com.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +30,9 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BankService bankService;
 
 
     private UserMapper userMapper;
@@ -59,6 +62,7 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     @Override
     public Long create(UserCreateDto dto) {
         validateUser(dto);
+
         return userRepository.save(userMapper.toEntity(dto)).getId();
 
     }
@@ -172,6 +176,9 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     private void validateUser(UserCreateDto createDto) {
+        if (!bankService.getById(createDto.getBank()).isVisible()){
+            throw new BankNotVisibleException();
+        }
         if (userRepository.existsByEmail(createDto.getEmail())) {
             throw new UserEmailExistsException();
         }

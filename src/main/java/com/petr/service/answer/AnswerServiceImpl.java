@@ -1,18 +1,17 @@
 package com.petr.service.answer;
 
-import com.petr.exception.AnswerExistsException;
-import com.petr.exception.QuestionCanNotHasAnswerException;
-import com.petr.exception.QuestionExistsException;
+import com.petr.exception.answer.AnswerExistsException;
+import com.petr.exception.question.QuestionCanNotHasAnswerException;
+import com.petr.exception.question.QuestionDeletedException;
 import com.petr.persistence.entity.Answer;
 import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.QuestionType;
-import com.petr.persistence.entity.Survey;
+import com.petr.persistence.entity.Status;
 import com.petr.persistence.repository.AnswerRepository;
 import com.petr.service.question.QuestionService;
 import com.petr.transport.dto.answer.AnswerCreateDto;
 import com.petr.transport.dto.answer.AnswerFindDto;
 import com.petr.transport.dto.answer.AnswerOutcomeDto;
-import com.petr.transport.dto.question.QuestionCreateDto;
 import com.petr.transport.mapper.AnswerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,6 +60,9 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
     }
 
     private void validateAnswer(AnswerCreateDto dto, Long questionId) {
+        if (questionService.getById(questionId).getStatus().equals(Status.DELETED)){
+            throw new QuestionDeletedException();
+        }
         if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
             throw new AnswerExistsException();
         }

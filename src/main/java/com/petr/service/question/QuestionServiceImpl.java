@@ -1,11 +1,14 @@
 package com.petr.service.question;
 
-import com.petr.exception.QuestionExistsException;
-import com.petr.exception.QuestionMinMaxException;
-import com.petr.exception.QuestionNotFoundException;
+import com.petr.exception.question.QuestionExistsException;
+import com.petr.exception.question.QuestionMinMaxException;
+import com.petr.exception.question.QuestionNotFoundException;
+import com.petr.exception.survey.SurveyDeletedException;
+import com.petr.exception.survey.SurveyHasNotSurveyLimitException;
 import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.QuestionType;
-import com.petr.persistence.entity.Survey;
+import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.repository.QuestionRepository;
 import com.petr.service.survey.SurveyService;
 import com.petr.transport.dto.question.QuestionCreateDto;
@@ -61,6 +64,12 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
     }
 
     private void validateQuestion(QuestionCreateDto dto, Long surveyId) {
+        if (surveyService.getById(surveyId).getStatus().equals(Status.DELETED)){
+            throw new SurveyDeletedException();
+        }
+        if (surveyService.getById(surveyId).getSurveyLimits().isEmpty()){
+            throw new SurveyHasNotSurveyLimitException();
+        }
         if (questionRepository.existsByTextAndSurveyId(dto.getText(), surveyId)) {
             throw new QuestionExistsException();
         }

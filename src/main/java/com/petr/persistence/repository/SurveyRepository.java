@@ -1,6 +1,6 @@
 package com.petr.persistence.repository;
 
-import com.petr.persistence.entity.Survey;
+import com.petr.persistence.entity.survey.Survey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

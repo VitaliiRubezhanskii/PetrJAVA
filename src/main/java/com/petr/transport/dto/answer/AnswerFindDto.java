@@ -1,5 +1,6 @@
 package com.petr.transport.dto.answer;
 
+import com.petr.persistence.entity.Status;
 import lombok.Data;
 
 @Data
@@ -9,7 +10,7 @@ public class AnswerFindDto {
 
     private String text;
 
-    private Boolean deleted;
+    private Status status;
 
     private Long question;
 

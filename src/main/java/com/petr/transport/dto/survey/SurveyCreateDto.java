@@ -2,6 +2,7 @@ package com.petr.transport.dto.survey;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +13,9 @@ public class SurveyCreateDto {
     @NotNull
     private String name;
 
-//    private List<Long> questionIds;
+    @NotNull
+    @Min(1)
+    private Integer count;
 
 
     public String getName() {
