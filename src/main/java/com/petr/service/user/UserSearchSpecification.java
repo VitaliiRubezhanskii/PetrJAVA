@@ -18,6 +18,7 @@ public abstract class UserSearchSpecification extends AbstractSearchSpecificatio
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "verify", dto.isVerify()));
+            predicates.add(toEqualsPredicate(root, criteriaBuilder, "gender", dto.getGender()));
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "deleted", dto.isDeleted()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "name", dto.getName()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "surname", dto.getSurname()));

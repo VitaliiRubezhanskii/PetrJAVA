@@ -1,5 +1,6 @@
 package com.petr.transport.dto.user;
 
+import com.petr.persistence.entity.Gender;
 import com.petr.persistence.entity.Role;
 import lombok.Data;
 
@@ -9,6 +10,8 @@ public class UserOutcomeDto {
     private Long id;
 
     private Role role;
+
+    private Gender gender;
 
     private boolean verify;
 

@@ -1,5 +1,6 @@
 package com.petr.transport.dto.user;
 
+import com.petr.persistence.entity.Gender;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,6 +32,9 @@ public class UserCreateDto {
     @NotNull
     @Size(min = 13, max = 13)
     private String phone;
+
+    @NotNull
+    private Gender gender;
 
     @Email
     @NotNull
