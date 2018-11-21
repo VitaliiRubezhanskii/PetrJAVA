@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Status;
 import com.petr.service.surveyLimit.SurveyLimitService;
 import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
 import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
@@ -30,6 +31,24 @@ public class SurveyLimitController {
     public Page<SurveyLimitOutcomeDto> getSurveys(SurveyLimitFindDto dto,
                                                   @PageableDefault(size = 5) Pageable pageable) {
         return surveyLimitService.getAll(dto, pageable);
+    }
+
+    //admin
+    @PostMapping("/deleted/{id}")
+    public void setDeleted(@PathVariable("id") Long id) {
+        surveyLimitService.setStatus(id, Status.DELETED);
+    }
+
+    //admin
+    @PostMapping("/active/{id}")
+    public void setActive(@PathVariable("id") Long id) {
+        surveyLimitService.setStatus(id, Status.ACTIVE);
+    }
+
+    //admin
+    @PostMapping("/unpublish/{id}")
+    public void setUnpublish(@PathVariable("id") Long id) {
+        surveyLimitService.setStatus(id, Status.UNPUBLISH);
     }
 
 }

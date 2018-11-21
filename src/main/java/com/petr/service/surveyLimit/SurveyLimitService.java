@@ -1,5 +1,6 @@
 package com.petr.service.surveyLimit;
 
+import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
 import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
@@ -18,6 +19,8 @@ public interface SurveyLimitService {
     Page<SurveyLimitOutcomeDto> getAll(SurveyLimitFindDto dto, Pageable pageable);
 
     Long create(SurveyLimitCreateDto dto, Long surveyId);
+
+    void setStatus(Long id, Status status);
 
     List<Long> getIdFromEntity(List<SurveyLimit> surveyLimits);
 }

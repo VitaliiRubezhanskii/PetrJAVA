@@ -63,6 +63,11 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
         return questionRepository.save(question).getId();
     }
 
+    @Override
+    public void setStatus(Long id, Status status){
+        getById(id).setStatus(status);
+    }
+
     private void validateQuestion(QuestionCreateDto dto, Long surveyId) {
         if (surveyService.getById(surveyId).getStatus().equals(Status.DELETED)){
             throw new SurveyDeletedException();

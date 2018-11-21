@@ -21,7 +21,7 @@ public class Answer {
 
     private String text;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 

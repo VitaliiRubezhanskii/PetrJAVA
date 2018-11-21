@@ -18,10 +18,6 @@ public class SurveyOutcomeDto {
 
     private Long date;
 
-    private Long finishDate;
-
-    private Long startDate;
-
     private List<Long> surveyLimits;
 
     private Integer count;

@@ -1,6 +1,7 @@
 package com.petr.service.answer;
 
 import com.petr.persistence.entity.Answer;
+import com.petr.persistence.entity.Status;
 import com.petr.transport.dto.answer.AnswerCreateDto;
 import com.petr.transport.dto.answer.AnswerFindDto;
 import com.petr.transport.dto.answer.AnswerOutcomeDto;
@@ -12,9 +13,13 @@ import java.util.List;
 
 @Transactional
 public interface AnswerService {
+    Answer getById(Long id);
+
     Page<AnswerOutcomeDto> getAll(AnswerFindDto dto, Pageable pageable);
 
     Long create(AnswerCreateDto dto, Long questionId);
 
     List<Long> getIdFromEntity(List<Answer> answers);
+
+    void setStatus(Long id, Status status);
 }

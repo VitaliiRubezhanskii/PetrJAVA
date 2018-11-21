@@ -26,7 +26,7 @@ public class Survey {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 

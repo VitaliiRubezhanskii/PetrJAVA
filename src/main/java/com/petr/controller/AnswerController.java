@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Status;
 import com.petr.service.answer.AnswerService;
 import com.petr.transport.dto.answer.AnswerCreateDto;
 import com.petr.transport.dto.answer.AnswerFindDto;
@@ -29,5 +30,23 @@ public class AnswerController {
     public Page<AnswerOutcomeDto> getQuestions(AnswerFindDto dto,
                                                @PageableDefault(size = 5) Pageable pageable) {
         return answerService.getAll(dto, pageable);
+    }
+
+    //admin
+    @PostMapping("/deleted/{id}")
+    public void setDeleted(@PathVariable("id") Long id) {
+        answerService.setStatus(id, Status.DELETED);
+    }
+
+    //admin
+    @PostMapping("/active/{id}")
+    public void setActive(@PathVariable("id") Long id) {
+        answerService.setStatus(id, Status.ACTIVE);
+    }
+
+    //admin
+    @PostMapping("/unpublish/{id}")
+    public void setUnpublish(@PathVariable("id") Long id) {
+        answerService.setStatus(id, Status.UNPUBLISH);
     }
 }

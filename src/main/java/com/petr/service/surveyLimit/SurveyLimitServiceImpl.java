@@ -1,9 +1,6 @@
 package com.petr.service.surveyLimit;
 
-import com.petr.exception.survey.SurveyDeletedException;
-import com.petr.exception.survey.SurveyLimitCountException;
-import com.petr.exception.survey.SurveyLimitMinMaxException;
-import com.petr.exception.survey.SurveyNotFoundException;
+import com.petr.exception.survey.*;
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
@@ -39,7 +36,7 @@ public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification imple
 
     @Override
     public SurveyLimit getById(Long id) {
-        return surveyLimitRepository.findById(id).orElseThrow(SurveyNotFoundException::new);
+        return surveyLimitRepository.findById(id).orElseThrow(SurveyLimitNotFoundException::new);
     }
 
     @Override
@@ -54,7 +51,15 @@ public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification imple
     @Override
     public Long create(SurveyLimitCreateDto dto, Long surveyId) {
         validateSurveyLimit(dto, surveyId);
-        return surveyLimitRepository.save(surveyLimitMapper.toEntity(dto)).getId();
+        SurveyLimit surveyLimit = surveyLimitMapper.toEntity(dto);
+        Survey survey = surveyService.getById(surveyId);
+        surveyLimit.setSurvey(survey);
+        return surveyLimitRepository.save(surveyLimit).getId();
+    }
+
+    @Override
+    public void setStatus(Long id, Status status){
+        getById(id).setStatus(status);
     }
 
     @Override
@@ -74,12 +79,15 @@ public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification imple
             throw new SurveyLimitMinMaxException();
         }
         Survey survey = surveyService.getById(surveyId);
-        if (survey.getStatus().equals(Status.DELETED)){
+        if (survey.getStatus().equals(Status.DELETED)) {
             throw new SurveyDeletedException();
         }
-        if (survey.getCount()<dto.getCount()){
+        int count = 0;
+        for (SurveyLimit surveyLimit : survey.getSurveyLimits()) {
+            count += surveyLimit.getCount();
+        }
+        if (survey.getCount() < dto.getCount() || count >= survey.getCount()) {
             throw new SurveyLimitCountException();
         }
-
     }
 }

@@ -2,6 +2,7 @@ package com.petr.service.survey;
 
 import com.petr.exception.survey.SurveyExistsException;
 import com.petr.exception.survey.SurveyNotFoundException;
+import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.repository.SurveyRepository;
 import com.petr.transport.dto.survey.SurveyCreateDto;
@@ -45,6 +46,10 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
     public Long create(SurveyCreateDto dto) {
         validateSurvey(dto);
         return surveyRepository.save(surveyMapper.toEntity(dto)).getId();
+    }
+    @Override
+    public void setStatus(Long id, Status status){
+        getById(id).setStatus(status);
     }
 
     private void validateSurvey(SurveyCreateDto dto) {

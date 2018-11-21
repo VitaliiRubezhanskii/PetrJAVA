@@ -1,5 +1,6 @@
 package com.petr.service.survey;
 
+import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
@@ -15,4 +16,6 @@ public interface SurveyService {
     Page<SurveyOutcomeDto> getAll(SurveyFindDto dto, Pageable pageable);
 
     Long create(SurveyCreateDto dto);
+
+    void setStatus(Long id, Status status);
 }

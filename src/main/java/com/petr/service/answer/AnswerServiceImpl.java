@@ -1,6 +1,7 @@
 package com.petr.service.answer;
 
 import com.petr.exception.answer.AnswerExistsException;
+import com.petr.exception.answer.AnswerNotFoundException;
 import com.petr.exception.question.QuestionCanNotHasAnswerException;
 import com.petr.exception.question.QuestionDeletedException;
 import com.petr.persistence.entity.Answer;
@@ -39,6 +40,11 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
     private AnswerMapper answerMapper;
 
     @Override
+    public Answer getById(Long id){
+        return answerRepository.findById(id).orElseThrow(AnswerNotFoundException::new);
+    }
+
+    @Override
     public Page<AnswerOutcomeDto> getAll(AnswerFindDto dto, Pageable pageable) {
         Page<Answer> result = answerRepository.findAll(
                 answerFilter(dto),
@@ -59,15 +65,6 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
         return answerRepository.save(answer).getId();
     }
 
-    private void validateAnswer(AnswerCreateDto dto, Long questionId) {
-        if (questionService.getById(questionId).getStatus().equals(Status.DELETED)){
-            throw new QuestionDeletedException();
-        }
-        if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
-            throw new AnswerExistsException();
-        }
-    }
-
     @Override
     public List<Long> getIdFromEntity(List<Answer> answers) {
         if (answers == null) {
@@ -78,5 +75,20 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
             answerIds.add(answer.getId());
         }
         return answerIds;
+    }
+
+    @Override
+    public void setStatus(Long id, Status status){
+        getById(id).setStatus(status);
+    }
+
+
+    private void validateAnswer(AnswerCreateDto dto, Long questionId) {
+        if (questionService.getById(questionId).getStatus().equals(Status.DELETED)){
+            throw new QuestionDeletedException();
+        }
+        if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
+            throw new AnswerExistsException();
+        }
     }
 }

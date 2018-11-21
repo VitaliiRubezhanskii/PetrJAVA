@@ -32,4 +32,9 @@ public class QuestionExceptionHandler {
     private String questionMinMaxException(QuestionMinMaxException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
+
+    @ExceptionHandler(value = QuestionDeletedException.class)
+    private String questionDeletedException(QuestionDeletedException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
 }

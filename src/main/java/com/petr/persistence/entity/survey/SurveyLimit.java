@@ -32,7 +32,7 @@ public class SurveyLimit {
 
     private Integer passed = 0;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 

@@ -36,4 +36,9 @@ public class SurveyExceptionHandler {
     private String SurveyLimitCountException(SurveyLimitCountException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
+
+    @ExceptionHandler(value = SurveyHasNotSurveyLimitException.class)
+    private String SurveyHasNotSurveyLimitException(SurveyHasNotSurveyLimitException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
 }

@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Status;
 import com.petr.service.survey.SurveyService;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
@@ -30,6 +31,24 @@ public class SurveyController {
     public Page<SurveyOutcomeDto> getSurveys(SurveyFindDto dto,
                                              @PageableDefault(size = 5) Pageable pageable) {
         return surveyService.getAll(dto, pageable);
+    }
+
+    //admin
+    @PostMapping("/deleted/{id}")
+    public void setDeleted(@PathVariable("id") Long id) {
+        surveyService.setStatus(id, Status.DELETED);
+    }
+
+    //admin
+    @PostMapping("/active/{id}")
+    public void setActive(@PathVariable("id") Long id) {
+        surveyService.setStatus(id, Status.ACTIVE);
+    }
+
+    //admin
+    @PostMapping("/unpublish/{id}")
+    public void setUnpublish(@PathVariable("id") Long id) {
+        surveyService.setStatus(id, Status.UNPUBLISH);
     }
 
 }
