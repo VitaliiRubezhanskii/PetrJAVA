@@ -22,7 +22,7 @@ public class BankController {
     //admin
     @GetMapping
     public Page<BankOutcomeDto> getBanks(BankFindDto dto,
-                                           @PageableDefault(size = 5) Pageable pageable) {
+                                         @PageableDefault(size = 5) Pageable pageable) {
         return bankService.getAll(dto, pageable);
     }
 
@@ -30,5 +30,17 @@ public class BankController {
     @PutMapping
     public Long create(@RequestBody @Valid BankCreateDto dto) {
         return bankService.create(dto);
+    }
+
+    //admin
+    @PostMapping("/DeletedTrue/{id}")
+    public void setDeletedTrue(@PathVariable("id") Long id) {
+        bankService.setDeleted(id,true);
+    }
+
+    //admin
+    @PostMapping("/DeletedFalse/{id}")
+    public void setDeletedFalse(@PathVariable("id") Long id) {
+        bankService.setDeleted(id,false);
     }
 }

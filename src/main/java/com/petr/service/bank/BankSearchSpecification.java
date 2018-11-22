@@ -17,6 +17,7 @@ public abstract class BankSearchSpecification extends AbstractSearchSpecificatio
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "name", dto.getName()));
+            predicates.add(toLikePredicate(root, criteriaBuilder, "deleted", dto.getDeleted()));
             predicates.add(toEqualsPredicateIds(root, "users", dto.getUsers()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "date", dto.getStartDate(), dto.getFinishDate()));
             Object[] rawPredicates = predicates.stream().filter(Objects::nonNull).toArray();
@@ -24,3 +25,5 @@ public abstract class BankSearchSpecification extends AbstractSearchSpecificatio
         };
     }
 }
+
+

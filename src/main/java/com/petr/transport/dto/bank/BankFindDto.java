@@ -10,7 +10,7 @@ public class BankFindDto {
 
     private Long id;
 
-    private Boolean visible;
+    private Boolean deleted;
 
     private String name;
 

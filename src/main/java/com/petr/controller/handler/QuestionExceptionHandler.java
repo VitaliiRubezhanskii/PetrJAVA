@@ -37,4 +37,9 @@ public class QuestionExceptionHandler {
     private String questionDeletedException(QuestionDeletedException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
+
+    @ExceptionHandler(value = QuestionMinNotEqualsMaxException.class)
+    private String questionMinNotEqualsMaxException(QuestionMinNotEqualsMaxException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
 }

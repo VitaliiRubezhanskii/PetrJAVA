@@ -58,4 +58,14 @@ public class UserExceptionHandler {
     private String userPhoneExistsException(UserPhoneExistsException e) {
         return String.format("{\"error\":\"%s\"}", e.getMessage());
     }
+
+    @ExceptionHandler(value = UserDeletedException.class)
+    private String userDeletedException(UserDeletedException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
+
+    @ExceptionHandler(value = UserNotVerifyException.class)
+    private String userNotVerifyException(UserNotVerifyException e) {
+        return String.format("{\"error\":\"%s\"}", e.getMessage());
+    }
 }

@@ -19,4 +19,7 @@ public interface BankService {
     Page<BankOutcomeDto> getAll(BankFindDto dto, Pageable pageable);
 
     Long create(BankCreateDto dto);
+
+    void setDeleted(Long id, boolean deleted);
 }
+

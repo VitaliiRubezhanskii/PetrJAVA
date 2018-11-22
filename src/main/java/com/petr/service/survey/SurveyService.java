@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Transactional
 public interface SurveyService {
     Survey getById(Long id);
@@ -18,4 +20,6 @@ public interface SurveyService {
     Long create(SurveyCreateDto dto);
 
     void setStatus(Long id, Status status);
+
+    Map<Long, Long> getSurveyByUser(Long userId, long location);
 }

@@ -52,6 +52,12 @@ public class BankServiceImpl extends BankSearchSpecification implements BankServ
 
     }
 
+    @Override
+    public void setDeleted(Long id, boolean deleted) {
+        Bank bank = getById(id);
+        bank.setDeleted(deleted);
+    }
+
     private void validateBank(BankCreateDto createDto) {
         if (bankRepository.existsByName(createDto.getName().toLowerCase())) {
             throw new BankExistsException();

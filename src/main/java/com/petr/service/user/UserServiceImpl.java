@@ -1,8 +1,7 @@
 package com.petr.service.user;
 
-import com.petr.exception.bank.BankNotVisibleException;
+import com.petr.exception.bank.BankDeletedException;
 import com.petr.exception.user.*;
-import com.petr.persistence.entity.Bank;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.repository.UserRepository;
 import com.petr.service.bank.BankService;
@@ -176,8 +175,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     private void validateUser(UserCreateDto createDto) {
-        if (!bankService.getById(createDto.getBank()).isVisible()){
-            throw new BankNotVisibleException();
+        if (bankService.getById(createDto.getBank()).isDeleted()){
+            throw new BankDeletedException();
         }
         if (userRepository.existsByEmail(createDto.getEmail())) {
             throw new UserEmailExistsException();

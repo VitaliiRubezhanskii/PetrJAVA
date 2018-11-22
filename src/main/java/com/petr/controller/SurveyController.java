@@ -12,6 +12,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/surveys")
@@ -51,4 +53,9 @@ public class SurveyController {
         surveyService.setStatus(id, Status.UNPUBLISH);
     }
 
+    //user
+    @GetMapping("/getSurveyByUser/{userId}/{location}")
+    public Map<Long, Long> getSurveyById(@PathVariable("userId") Long userId, @PathVariable("location") Long location){
+        return surveyService.getSurveyByUser(userId, location);
+    }
 }

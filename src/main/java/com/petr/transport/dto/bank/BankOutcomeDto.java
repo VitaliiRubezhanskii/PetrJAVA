@@ -9,7 +9,7 @@ public class BankOutcomeDto {
 
     private Long id;
 
-    private Boolean visible;
+    private Boolean deleted;
 
     private String name;
 

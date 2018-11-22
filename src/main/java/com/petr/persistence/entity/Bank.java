@@ -26,7 +26,7 @@ public class Bank {
     private Long date =new Date().getTime();
 
     @Column(nullable = false)
-    private boolean visible = true;
+    private boolean deleted = false;
 
     @OneToMany(mappedBy = "bank")
     private List<User> users;

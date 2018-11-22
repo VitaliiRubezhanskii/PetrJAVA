@@ -2,6 +2,7 @@ package com.petr.service.question;
 
 import com.petr.exception.question.QuestionExistsException;
 import com.petr.exception.question.QuestionMinMaxException;
+import com.petr.exception.question.QuestionMinNotEqualsMaxException;
 import com.petr.exception.question.QuestionNotFoundException;
 import com.petr.exception.survey.SurveyDeletedException;
 import com.petr.exception.survey.SurveyHasNotSurveyLimitException;
@@ -82,8 +83,8 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
             throw  new QuestionMinMaxException();
         }
         if (dto.getType().equals(QuestionType.TEXT)){
-            if (dto.getMin()>1&&dto.getMax()>1){
-                throw new QuestionExistsException();
+            if (dto.getMin()>1||dto.getMax()>1){
+                throw new QuestionMinNotEqualsMaxException();
             }
         }
     }
