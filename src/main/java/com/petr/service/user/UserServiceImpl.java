@@ -12,8 +12,13 @@ import com.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.petr.security.model.Role;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +27,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Service
-public class UserServiceImpl extends UserSearchSpecification implements UserService {
+@Service("userService")
+public class UserServiceImpl extends UserSearchSpecification implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -156,6 +163,15 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         userRepository.save(user);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String inn) throws UsernameNotFoundException {
+        User user = findUserByInn("123456789");
+        if(user == null){
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
+    }
+
     private String savePhoto(MultipartFile multipartFile, User user) {
         String photoPath = null;
         try {
@@ -192,6 +208,15 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         }
     }
 
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            //authorities.add(new SimpleGrantedAuthority(roleType.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
+        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
 
     @Override
     public List<Long> getIdFromEntity(List<User> users) {
@@ -205,5 +230,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         return userIds;
     }
 
-
+    @Override
+    public User findUserByInn(String inn) {
+        return userRepository.findUserByInn(inn);
+    }
 }

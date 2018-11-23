@@ -1,13 +1,17 @@
 package com.petr.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import com.petr.security.model.Role;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,9 +25,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "roleType", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private RoleType role = RoleType.USER;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -90,5 +94,18 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<SurveyResult> surveyResults;
+
+    @Column
+    private String username;
+
+    @Column
+    @JsonIgnore
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_ROLES", joinColumns = {
+            @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+            @JoinColumn(name = "ROLE_ID") })
+    private Set<Role> roles;
 
 }

@@ -1,4 +1,4 @@
-package com.petr.security;
+package com.petr.security.configuration;
 
 import java.io.IOException;
 

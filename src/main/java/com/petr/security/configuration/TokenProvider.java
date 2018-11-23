@@ -1,4 +1,4 @@
-package com.petr.security;
+package com.petr.security.configuration;
 
 
 import io.jsonwebtoken.*;
@@ -16,9 +16,13 @@ import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.petr.security.model.Constants.*;
+
 
 @Component
 public class TokenProvider implements Serializable {
+
+
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

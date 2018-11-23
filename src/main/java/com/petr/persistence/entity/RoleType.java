@@ -1,6 +1,6 @@
 package com.petr.persistence.entity;
 
-public enum Role {
+public enum RoleType {
 
     ADMIN, USER
 

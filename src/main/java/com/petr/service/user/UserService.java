@@ -34,4 +34,6 @@ public interface UserService {
     void setDeleted(boolean delete, Long userId);
 
     List<Long> getIdFromEntity(List<User> users);
+
+    User findUserByInn(String inn);
 }
