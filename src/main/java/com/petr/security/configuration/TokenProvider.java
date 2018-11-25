@@ -22,8 +22,6 @@ import static com.petr.security.model.Constants.*;
 @Component
 public class TokenProvider implements Serializable {
 
-
-
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -33,7 +31,7 @@ public class TokenProvider implements Serializable {
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
+         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
@@ -64,9 +62,7 @@ public class TokenProvider implements Serializable {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        return (
-            username.equals(userDetails.getUsername())
-                && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     UsernamePasswordAuthenticationToken getAuthentication(final String token, final Authentication existingAuth, final UserDetails userDetails) {

@@ -14,5 +14,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     boolean existsByPassport(String passport);
 
-    User findUserByInn(String inn);
+    User findUserByUsername(String username);
 }

@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.User;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.service.user.UserService;
 import com.petr.transport.dto.user.UserCreateDto;
@@ -93,6 +94,11 @@ public class UserController {
     public void addPhoto(@RequestParam("file") MultipartFile file,
                          @PathVariable("id") Long id) {
         userService.addPhoto(file, id);
+    }
+
+    @GetMapping(value = "/{username}")
+    public User getUserByUserName(@PathVariable String username){
+        return userService.findUserByUsername(username);
     }
 }
 

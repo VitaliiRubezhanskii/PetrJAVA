@@ -164,8 +164,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public UserDetails loadUserByUsername(String inn) throws UsernameNotFoundException {
-        User user = findUserByInn("123456789");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findUserByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -231,7 +231,7 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public User findUserByInn(String inn) {
-        return userRepository.findUserByInn(inn);
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }

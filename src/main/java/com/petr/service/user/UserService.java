@@ -35,5 +35,5 @@ public interface UserService {
 
     List<Long> getIdFromEntity(List<User> users);
 
-    User findUserByInn(String inn);
+    User findUserByUsername(String username);
 }

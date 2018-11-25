@@ -24,9 +24,9 @@ public class SurveyResult {
     @JoinColumn(name = "id_survey")
     private Survey survey;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "id_user")
+//    private User user;
 
     @OneToMany(mappedBy = "surveyResult")
     private List<QuestionResult> questionResults;

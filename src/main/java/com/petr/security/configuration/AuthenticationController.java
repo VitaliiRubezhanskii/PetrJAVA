@@ -2,7 +2,6 @@ package com.petr.security.configuration;
 
 import com.petr.security.model.AuthToken;
 import com.petr.security.model.LoginUser;
-import com.petr.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +22,6 @@ public class AuthenticationController {
     @Autowired
     private TokenProvider jwtTokenUtil;
 
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = "/generate-token", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
@@ -36,9 +33,9 @@ public class AuthenticationController {
             )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final User user = userService.findOne(loginUser.getUsername());
-//        final String token = jwtTokenUtil.generateToken(authentication);
-        final String token = "$2a$04$StghL1FYVyZLdi8/DIkAF./2rz61uiYPI3.MaAph5hUq03XKeflyW";
+
+        final String token = jwtTokenUtil.generateToken(authentication);
+
         return ResponseEntity.ok(new AuthToken(token));
     }
 
