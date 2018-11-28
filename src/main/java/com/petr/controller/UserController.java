@@ -39,28 +39,16 @@ public class UserController {
 
 
     //admin
-    @PostMapping(value = "/verifyTrue/{id}")
-    public void setVerifyTrue(@PathVariable("id") Long id) {
-        userService.setVerify(true, id);
+    @PostMapping(value = "/verify/{isVerified}/user/{id}")
+    public void setVerify(@PathVariable("id") Long id, @PathVariable("isVerified") boolean isVerified) {
+        userService.setVerify(isVerified, id);
     }
 
     //admin
-    @PostMapping(value = "/verifyFalse/{id}")
-    public void setVerifyFalse(@PathVariable("id") Long id) {
-        userService.setVerify(false, id);
-    }
-
-    //admin
-    @PutMapping(value = "/deleted/{isDeleted}/user/{id}")
+    @PutMapping(value = "/delete/{isDeleted}/user/{id}")
     public void setDeleted(@PathVariable("id") Long id, @PathVariable("isDeleted") boolean isDeleted) {
         userService.setDeleted(isDeleted, id);
     }
-
-//    //admin
-//    @PostMapping(value = "/deletedFalse/{id}")
-//    public void setDeletedFalse(@PathVariable("id") Long id) {
-//        userService.setDeleted(false, id);
-//    }
 
     //user
     @PostMapping(value = "/addPasswordFirstPage/{id}")
