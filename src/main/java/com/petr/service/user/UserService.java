@@ -15,6 +15,10 @@ import java.util.List;
 public interface UserService {
     User getById(Long id);
 
+    void editUser(User user);
+
+    List<User> findAll();
+
     Page<UserOutcomeDto> getAll(UserFindDto dto, Pageable pageable);
 
     Long create(UserCreateDto dto);

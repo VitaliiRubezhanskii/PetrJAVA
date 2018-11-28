@@ -2,10 +2,7 @@ package com.petr.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import com.petr.security.model.Role;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class User {
 
     @Id
@@ -44,6 +42,9 @@ public class User {
 
     @Column(nullable = false)
     private String surname;
+
+    @Column(name = "middle_name", nullable = false)
+    private String middleName;
 
     @Column(nullable = false)
     private String patronymic;
@@ -104,6 +105,10 @@ public class User {
     @Column
     @JsonIgnore
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLES", joinColumns = {

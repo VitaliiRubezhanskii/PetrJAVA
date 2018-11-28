@@ -27,10 +27,21 @@ public class UserController {
     private final SurveyLimitRepository surveyLimitRepository;
 
     //admin
+//    @GetMapping(value = "/all")
+//    public List<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
+//        return userService.getAll(dto, pageable).getContent();
+//    }
+
     @GetMapping(value = "/all")
-    public List<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
-        return userService.getAll(dto, pageable).getContent();
+    public List<User> getUsers(){
+        return userService.findAll();
     }
+
+    @PutMapping(value = "/edit")
+    public void editUser(@RequestBody User user){
+        userService.editUser(user);
+    }
+
     //user
     @PutMapping(value = "/new")
     public Long create(@RequestBody @Valid UserCreateDto dto) {

@@ -2,7 +2,9 @@ package com.petr.service.user;
 
 import com.petr.exception.bank.BankDeletedException;
 import com.petr.exception.user.*;
+import com.petr.persistence.entity.Address;
 import com.petr.persistence.entity.User;
+import com.petr.persistence.repository.AddressRepository;
 import com.petr.persistence.repository.UserRepository;
 import com.petr.service.bank.BankService;
 import com.petr.transport.dto.user.UserCreateDto;
@@ -40,6 +42,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     @Autowired
     private BankService bankService;
+    @Autowired
+    private AddressRepository addressRepository;
 
 
     private UserMapper userMapper;
@@ -55,6 +59,11 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
             return null;
         }
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -233,5 +242,24 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     @Override
     public User findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public void editUser(User user) {
+        User editedUser = getById(user.getId());
+        System.out.println(user.getMiddleName());
+        editedUser.setMiddleName(user.getMiddleName());
+        Address address = new Address();
+        address.setOblast(user.getAddress().getOblast());
+        address.setCity(user.getAddress().getCity());
+        address.setStreet(user.getAddress().getStreet());
+        address.setBuildingNum(user.getAddress().getBuildingNum());
+        address.setApartmentNum(user.getAddress().getApartmentNum());
+
+        editedUser.setAddress(address);
+        editedUser.setPhone(user.getPhone());
+        editedUser.setEmail(user.getEmail());
+        addressRepository.saveAndFlush(address);
+        userRepository.save(editedUser);
     }
 }
