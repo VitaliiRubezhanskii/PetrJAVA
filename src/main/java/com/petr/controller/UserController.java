@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -26,9 +27,9 @@ public class UserController {
     private final SurveyLimitRepository surveyLimitRepository;
 
     //admin
-    @GetMapping
-    public Page<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
-        return userService.getAll(dto, pageable);
+    @GetMapping(value = "/all")
+    public List<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
+        return userService.getAll(dto, pageable).getContent();
     }
 
     //admin
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     //user
-    @PutMapping
+    @PutMapping(value = "/new")
     public Long create(@RequestBody @Valid UserCreateDto dto) {
         return userService.create(dto);
     }

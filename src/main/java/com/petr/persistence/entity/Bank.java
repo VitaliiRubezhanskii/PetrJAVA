@@ -28,6 +28,6 @@ public class Bank {
     @Column(nullable = false)
     private boolean deleted = false;
 
-//    @OneToMany(mappedBy = "bank")
-//    private List<User> users;
+    @OneToMany(mappedBy = "bank")
+    private List<User> users;
 }

@@ -80,20 +80,23 @@ public class User {
     private String photo;
 
     private Long date = new Date().getTime();
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Bank bank;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private Bank bank;
 
     @Column(nullable = false)
     private String card;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parentId_id")
-//    private User parentId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parentId_id")
+    @JsonIgnore
+    private User parentId;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<SurveyResult> surveyResults;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<SurveyResult> surveyResults;
 
     @Column
     private String username;
