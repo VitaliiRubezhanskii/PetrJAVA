@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600) //http://localhost:4200
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -31,6 +31,12 @@ public class UserController {
     public List<UserOutcomeDto> getUsers(UserFindDto dto, @PageableDefault(size = 5) Pageable pageable) {
         return userService.getAll(dto, pageable).getContent();
     }
+    //user
+    @PutMapping(value = "/new")
+    public Long create(@RequestBody @Valid UserCreateDto dto) {
+        return userService.create(dto);
+    }
+
 
     //admin
     @PostMapping(value = "/verifyTrue/{id}")
@@ -45,22 +51,16 @@ public class UserController {
     }
 
     //admin
-    @PostMapping(value = "/deletedTrue/{id}")
-    public void setDeletedTrue(@PathVariable("id") Long id) {
-        userService.setDeleted(true, id);
+    @PutMapping(value = "/deleted/{isDeleted}/user/{id}")
+    public void setDeleted(@PathVariable("id") Long id, @PathVariable("isDeleted") boolean isDeleted) {
+        userService.setDeleted(isDeleted, id);
     }
 
-    //admin
-    @PostMapping(value = "/deletedFalse/{id}")
-    public void setDeletedFalse(@PathVariable("id") Long id) {
-        userService.setDeleted(false, id);
-    }
-
-    //user
-    @PutMapping(value = "/new")
-    public Long create(@RequestBody @Valid UserCreateDto dto) {
-        return userService.create(dto);
-    }
+//    //admin
+//    @PostMapping(value = "/deletedFalse/{id}")
+//    public void setDeletedFalse(@PathVariable("id") Long id) {
+//        userService.setDeleted(false, id);
+//    }
 
     //user
     @PostMapping(value = "/addPasswordFirstPage/{id}")

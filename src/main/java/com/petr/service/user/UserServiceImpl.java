@@ -69,7 +69,6 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     @Override
     public Long create(UserCreateDto dto) {
         validateUser(dto);
-
         return userRepository.save(userMapper.toEntity(dto)).getId();
 
     }
