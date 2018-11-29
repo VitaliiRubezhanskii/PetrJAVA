@@ -1,5 +1,6 @@
 package com.petr.transport.dto.user;
 
+import com.petr.persistence.entity.Address;
 import com.petr.persistence.entity.Gender;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
@@ -64,6 +65,9 @@ public class UserCreateDto {
     @NotBlank
     @Size(min = 16, max = 16)
     private String card;
+
+    @NotNull
+    private Address address;
 
 
 }

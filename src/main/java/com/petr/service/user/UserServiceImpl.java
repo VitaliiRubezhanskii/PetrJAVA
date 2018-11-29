@@ -259,7 +259,6 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         editedUser.setAddress(address);
         editedUser.setPhone(user.getPhone());
         editedUser.setEmail(user.getEmail());
-        addressRepository.saveAndFlush(address);
         userRepository.save(editedUser);
     }
 }

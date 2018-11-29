@@ -106,7 +106,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
