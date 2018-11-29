@@ -8,12 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public interface BankService {
 
     Bank getById(Long id);
 
+    List<Bank> getAllBanks();
+
     boolean existsById(Long id);
+
+    Bank findBankByName(String bankName);
 
     @Transactional(readOnly = true)
     Page<BankOutcomeDto> getAll(BankFindDto dto, Pageable pageable);

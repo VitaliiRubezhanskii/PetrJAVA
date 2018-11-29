@@ -9,5 +9,5 @@ public interface BankRepository extends JpaRepository<Bank, Long>, JpaSpecificat
 
     boolean existsByName(String name);
 
-    User findByName(String name);
+    Bank findByName(String name);
 }

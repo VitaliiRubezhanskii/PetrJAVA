@@ -35,8 +35,8 @@ public abstract class UserMapper {
                     expression = "java(createDto.getName().toLowerCase())"),
             @Mapping(target = "surname",
                     expression = "java(createDto.getSurname().toLowerCase())"),
-            @Mapping(target = "patronymic",
-                    expression = "java(createDto.getPatronymic().toLowerCase())"),
+            @Mapping(target = "middleName",
+                    expression = "java(createDto.getMiddleName().toLowerCase())"),
             @Mapping(target = "inn",
                     expression = "java(createDto.getInn().toLowerCase())")
     })

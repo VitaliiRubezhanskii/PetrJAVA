@@ -14,59 +14,59 @@ import javax.validation.constraints.Size;
 @Data
 public class UserCreateDto {
 
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String name;
-
-    @NotBlank
-    @NotNull
+//
+//    @NotBlank
+//    @NotNull
     private String surname;
 
-    @NotBlank
-    @NotNull
-    private String patronymic;
+//    @NotBlank
+//    @NotNull
+    private String middleName;
 
-    @NotNull
+//    @NotNull
     private Long birthDate;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 13, max = 13)
+//    @NotBlank
+//    @NotNull
+//    @Size(min = 13, max = 13)
     private String phone;
 
-    @NotNull
+//    @NotNull
     private Gender gender;
 
-    @Email
-    @NotNull
-    @NotBlank
+//    @Email
+//    @NotNull
+//    @NotBlank
     private String email;
 
-    @NotNull
-    @Size(min = 10, max = 10)
+//    @NotNull
+//    @Size(min = 10, max = 10)
     private String inn;
 
-    @NotNull
-    @Size(min = 8, max = 8)
+//    @NotNull
+//    @Size(min = 8, max = 8)
     private String passport;
 
-    @NotBlank
+//    @NotBlank
     private String issuedBy;
 
-    @NotBlank
+//    @NotBlank
     private String issuedWhen;
 
     private Long parentId;
 
-    @NotNull
+//    @NotNull
     private Long bank;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 16, max = 16)
+//    @NotNull
+//    @NotBlank
+//    @Size(min = 16, max = 16)
     private String card;
 
-    @NotNull
+//    @NotNull
     private Address address;
 
 

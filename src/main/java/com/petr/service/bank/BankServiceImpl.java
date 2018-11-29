@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BankServiceImpl extends BankSearchSpecification implements BankService {
 
@@ -64,4 +66,13 @@ public class BankServiceImpl extends BankSearchSpecification implements BankServ
         }
     }
 
+    @Override
+    public Bank findBankByName(String bankName) {
+        return bankRepository.findByName(bankName);
+    }
+
+    @Override
+    public List<Bank> getAllBanks() {
+        return bankRepository.findAll();
+    }
 }

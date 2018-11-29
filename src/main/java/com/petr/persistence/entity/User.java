@@ -46,8 +46,8 @@ public class User {
     @Column(name = "middle_name", nullable = false)
     private String middleName;
 
-    @Column(nullable = false)
-    private String patronymic;
+//    @Column(nullable = false)
+//    private String patronymic;
 
     @Column(nullable = false)
     private Long birthDate;

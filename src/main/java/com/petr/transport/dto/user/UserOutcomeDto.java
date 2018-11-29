@@ -21,7 +21,7 @@ public class UserOutcomeDto {
 
     private String surname;
 
-    private String patronymic;
+    private String middleName;
 
     private Long birthDate;
 

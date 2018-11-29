@@ -22,7 +22,7 @@ public abstract class UserSearchSpecification extends AbstractSearchSpecificatio
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "deleted", dto.isDeleted()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "name", dto.getName()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "surname", dto.getSurname()));
-            predicates.add(toLikePredicate(root, criteriaBuilder, "patronymic", dto.getPatronymic()));
+            predicates.add(toLikePredicate(root, criteriaBuilder, "middleName", dto.getMiddleName()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "birthDate", dto.getStartBirthDate(), dto.getFinishBirthDate()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "date", dto.getStartDate(), dto.getFinishDate()));
             predicates.add(toLikePredicate(root, criteriaBuilder, "phone", dto.getPhone()));

@@ -21,7 +21,7 @@ public class UserFindDto {
 
     private String surname;
 
-    private String patronymic;
+    private String middleName;
 
     private Long startBirthDate;
 
