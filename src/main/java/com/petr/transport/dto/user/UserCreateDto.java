@@ -66,6 +66,8 @@ public class UserCreateDto {
 //    @Size(min = 16, max = 16)
     private String card;
 
+    private String password;
+
 //    @NotNull
     private Address address;
 

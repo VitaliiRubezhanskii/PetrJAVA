@@ -35,14 +35,14 @@ public class BankController {
     }
 
     //admin
-    @PutMapping
+    @PutMapping(value = "/new")
     public Long create(@RequestBody @Valid BankCreateDto dto) {
         return bankService.create(dto);
     }
 
     //admin
     @PostMapping("/deleted/{isDeleted}/bank/{id}")
-    public void setDeletedTrue(@PathVariable("id") Long id,@PathVariable("isDeleted") boolean isDeleted) {
+    public void setDeleted(@PathVariable("id") Long id,@PathVariable("isDeleted") boolean isDeleted) {
         bankService.setDeleted(id, isDeleted);
     }
 

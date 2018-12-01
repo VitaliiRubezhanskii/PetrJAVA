@@ -27,5 +27,7 @@ public interface BankService {
     Long create(BankCreateDto dto);
 
     void setDeleted(Long id, boolean deleted);
+
+
 }
 

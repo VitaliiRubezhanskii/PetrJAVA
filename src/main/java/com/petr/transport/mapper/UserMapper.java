@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -21,6 +22,9 @@ public abstract class UserMapper {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Mappings({
             @Mapping(target = "bank",
@@ -38,7 +42,9 @@ public abstract class UserMapper {
             @Mapping(target = "middleName",
                     expression = "java(createDto.getMiddleName().toLowerCase())"),
             @Mapping(target = "inn",
-                    expression = "java(createDto.getInn().toLowerCase())")
+                    expression = "java(createDto.getInn().toLowerCase())"),
+            @Mapping(target = "password",
+                    expression = "java(passwordEncoder.encode(createDto.getPassword()))")
     })
     public abstract User toEntity(UserCreateDto createDto);
 

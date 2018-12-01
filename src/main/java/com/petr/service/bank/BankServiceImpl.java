@@ -75,4 +75,6 @@ public class BankServiceImpl extends BankSearchSpecification implements BankServ
     public List<Bank> getAllBanks() {
         return bankRepository.findAll();
     }
+
+
 }
