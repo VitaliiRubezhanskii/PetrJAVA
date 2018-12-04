@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.DocumentType;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.service.user.UserService;
@@ -66,43 +67,44 @@ public class UserController {
     }
 
     //user
-    @PostMapping(value = "/addPasswordFirstPage/{id}")
-    public void addFirstPhoto(@RequestParam("file") MultipartFile file,
-                              @PathVariable("id") Long id) {
-        userService.addPasswordFirstPage(file, id);
-    }
+//    @PostMapping(value = "/addPasswordFirstPage/{id}")
+//    public void addFirstPhoto(@RequestParam("file") MultipartFile file,
+//                              @PathVariable("id") Long id) {
+//        userService.addPasswordFirstPage(file, id);
+//    }
+//
+//    //user
+//    @PostMapping(value = "/addPasswordSecondPage/{id}")
+//    public void addSecondPhoto(@RequestParam("file") MultipartFile file,
+//                               @PathVariable("id") Long id) {
+//        userService.addPasswordSecondPage(file, id);
+//    }
+//
+//    //user
+//    @PostMapping(value = "/addPasswordLastPage/{id}")
+//    public void addLastPhoto(@RequestParam("file") MultipartFile file,
+//                             @PathVariable("id") Long id) {
+//        userService.addPasswordLastPage(file, id);
+//    }
+//
+//    //user
+//    @PostMapping(value = "/addPhotoInn/{inn}")
+//    public void addPhotoInn(@RequestParam("file") MultipartFile file,
+//                            @PathVariable("inn") Long inn) {
+//        userService.addPhotoInn(file, inn);
+//    }
 
     //user
-    @PostMapping(value = "/addPasswordSecondPage/{id}")
-    public void addSecondPhoto(@RequestParam("file") MultipartFile file,
-                               @PathVariable("id") Long id) {
-        userService.addPasswordSecondPage(file, id);
-    }
-
-    //user
-    @PostMapping(value = "/addPasswordLastPage/{id}")
-    public void addLastPhoto(@RequestParam("file") MultipartFile file,
-                             @PathVariable("id") Long id) {
-        userService.addPasswordLastPage(file, id);
-    }
-
-    //user
-    @PostMapping(value = "/addPhotoInn/{id}")
-    public void addPhotoInn(@RequestParam("file") MultipartFile file,
-                            @PathVariable("id") Long id) {
-        userService.addPhotoInn(file, id);
-    }
-
-    //user
-    @PostMapping(value = "/addPhoto/{id}")
+    @PostMapping(value = "/user/{id}/document/{documentType}")
     public void addPhoto(@RequestParam("file") MultipartFile file,
-                         @PathVariable("id") Long id) {
-        userService.addPhoto(file, id);
+                         @PathVariable("id") Long id,
+                         @PathVariable("documentType") String documentType) {
+        userService.addPhoto(file, id, DocumentType.valueOf(documentType));
     }
 
-    @GetMapping(value = "/{username}")
-    public User getUserByUserName(@PathVariable String username){
-        return userService.findUserByUsername(username);
+    @GetMapping(value = "/{email}")
+    public User getUserByUserName(@PathVariable String email){
+        return userService.findUserByEmail(email);
     }
 }
 

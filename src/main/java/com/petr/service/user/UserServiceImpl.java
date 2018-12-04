@@ -3,8 +3,8 @@ package com.petr.service.user;
 import com.petr.exception.bank.BankDeletedException;
 import com.petr.exception.user.*;
 import com.petr.persistence.entity.Address;
+import com.petr.persistence.entity.DocumentType;
 import com.petr.persistence.entity.User;
-import com.petr.persistence.repository.AddressRepository;
 import com.petr.persistence.repository.UserRepository;
 import com.petr.service.bank.BankService;
 import com.petr.transport.dto.user.UserCreateDto;
@@ -19,10 +19,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.petr.security.model.Role;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +41,6 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     @Autowired
     private BankService bankService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
 
     private UserMapper userMapper;
 
@@ -84,65 +78,66 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     }
 
-    @Override
-    public void addPasswordFirstPage(MultipartFile multipartFile, Long userId) {
-        User user = getById(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (user.getPasswordFirstPage() != null) {
-            throw new PassportFistPageException();
-        }
-        String photoPath = savePhoto(multipartFile, user);
-        user.setPasswordFirstPage(photoPath);
-        userRepository.save(user);
-    }
+//    @Override
+//    public void addPasswordFirstPage(MultipartFile multipartFile, Long userId) {
+//        User user = getById(userId);
+//        if (user == null) {
+//            throw new UserNotFoundException();
+//        }
+//        if (user.getPasswordFirstPage() != null) {
+//            throw new PassportFistPageException();
+//        }
+//        String photoPath = savePhoto(multipartFile, user);
+//        user.setPasswordFirstPage(photoPath);
+//        userRepository.save(user);
+//    }
+//
+//    @Override
+//    public void addPasswordSecondPage(MultipartFile multipartFile, Long userId) {
+//        User user = getById(userId);
+//        if (user == null) {
+//            throw new UserNotFoundException();
+//        }
+//        if (user.getPasswordSecondPage() != null) {
+//            throw new PassportSecondPageException();
+//        }
+//        String photoPath = savePhoto(multipartFile, user);
+//        user.setPasswordSecondPage(photoPath);
+//        userRepository.save(user);
+//    }
+//
+//    @Override
+//    public void addPasswordLastPage(MultipartFile multipartFile, Long userId) {
+//        User user = getById(userId);
+//        if (user == null) {
+//            throw new UserNotFoundException();
+//        }
+//        if (user.getPasswordLastPage() != null) {
+//            throw new PassportLastPageException();
+//        }
+//        String photoPath = savePhoto(multipartFile, user);
+//        user.setPasswordLastPage(photoPath);
+//        userRepository.save(user);
+//    }
+//
+//    @Override
+//    public void addPhotoInn(MultipartFile multipartFile, Long userId) {
+//        User user = getById(userId);
+//        if (user == null) {
+//            throw new UserNotFoundException();
+//        }
+//        if (user.getPhotoInn() != null) {
+//            throw new PhotoInnException();
+//        }
+//        String photoPath = savePhoto(multipartFile, user);
+//        user.setPhotoInn(photoPath);
+//        userRepository.save(user);
+//    }
 
     @Override
-    public void addPasswordSecondPage(MultipartFile multipartFile, Long userId) {
-        User user = getById(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (user.getPasswordSecondPage() != null) {
-            throw new PassportSecondPageException();
-        }
-        String photoPath = savePhoto(multipartFile, user);
-        user.setPasswordSecondPage(photoPath);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void addPasswordLastPage(MultipartFile multipartFile, Long userId) {
-        User user = getById(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (user.getPasswordLastPage() != null) {
-            throw new PassportLastPageException();
-        }
-        String photoPath = savePhoto(multipartFile, user);
-        user.setPasswordLastPage(photoPath);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void addPhotoInn(MultipartFile multipartFile, Long userId) {
-        User user = getById(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (user.getPhotoInn() != null) {
-            throw new PhotoInnException();
-        }
-        String photoPath = savePhoto(multipartFile, user);
-        user.setPhotoInn(photoPath);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void addPhoto(MultipartFile multipartFile, Long userId) {
-        User user = getById(userId);
+    public void addPhoto(MultipartFile multipartFile, Long userId, DocumentType documentType) {
+//        User user = getById(userId);
+        User user = userRepository.getOne(userId);
         if (user == null) {
             throw new UserNotFoundException();
         }
@@ -150,7 +145,23 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
             throw new PhotoException();
         }
         String photoPath = savePhoto(multipartFile, user);
-        user.setPhoto(photoPath);
+
+        if (documentType.equals(DocumentType.PERSONAL_PHOTO)){
+            user.setPhoto(photoPath);
+        }
+        if (documentType.equals(DocumentType.PASSPORT_FIRST_PAGE)){
+            user.setPasswordFirstPage(photoPath);
+        }
+        if (documentType.equals(DocumentType.PASSPORT_SECOND_PAGE)){
+            user.setPasswordSecondPage(photoPath);
+        }
+        if (documentType.equals(DocumentType.PASSPORT_LAST_PAGE)){
+            user.setPasswordSecondPage(photoPath);
+        }
+        if (documentType.equals(DocumentType.INN)){
+            user.setPhotoInn(photoPath);
+        }
+
         userRepository.save(user);
     }
 
@@ -175,8 +186,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findUserByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findUserByEmail(email);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -242,8 +253,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     @Override

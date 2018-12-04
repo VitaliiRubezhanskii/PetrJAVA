@@ -1,5 +1,6 @@
 package com.petr.service.user;
 
+import com.petr.persistence.entity.DocumentType;
 import com.petr.persistence.entity.User;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
@@ -23,15 +24,15 @@ public interface UserService {
 
     Long create(UserCreateDto dto);
 
-    void addPasswordFirstPage(MultipartFile multipartFile, Long userId);
+//    void addPasswordFirstPage(MultipartFile multipartFile, Long userId);
+//
+//    void addPasswordSecondPage(MultipartFile multipartFile, Long userId);
+//
+//    void addPasswordLastPage(MultipartFile multipartFile, Long userId);
+//
+//    void addPhotoInn(MultipartFile multipartFile, Long userId);
 
-    void addPasswordSecondPage(MultipartFile multipartFile, Long userId);
-
-    void addPasswordLastPage(MultipartFile multipartFile, Long userId);
-
-    void addPhotoInn(MultipartFile multipartFile, Long userId);
-
-    void addPhoto(MultipartFile multipartFile, Long userId);
+    void addPhoto(MultipartFile multipartFile, Long id, DocumentType documentType);
 
     void setVerify(boolean verify, Long userId);
 
@@ -39,5 +40,5 @@ public interface UserService {
 
     List<Long> getIdFromEntity(List<User> users);
 
-    User findUserByUsername(String username);
+    User findUserByEmail(String email);
 }
