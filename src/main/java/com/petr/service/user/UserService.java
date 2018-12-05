@@ -5,15 +5,13 @@ import com.petr.persistence.entity.User;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface UserService {
+
     User getById(Long id);
 
     void editUser(User user);
@@ -40,5 +38,5 @@ public interface UserService {
 
     List<Long> getIdFromEntity(List<User> users);
 
-    User findUserByEmail(String email);
+    User findUserByUsername(String username);
 }

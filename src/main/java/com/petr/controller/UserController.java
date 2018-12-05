@@ -95,16 +95,16 @@ public class UserController {
 //    }
 
     //user
-    @PostMapping(value = "/user/{id}/document/{documentType}")
+    @PatchMapping(value = "/user/{id}/document/{documentType}")
     public void addPhoto(@RequestParam("file") MultipartFile file,
                          @PathVariable("id") Long id,
                          @PathVariable("documentType") String documentType) {
         userService.addPhoto(file, id, DocumentType.valueOf(documentType));
     }
 
-    @GetMapping(value = "/{email}")
-    public User getUserByUserName(@PathVariable String email){
-        return userService.findUserByEmail(email);
+    @GetMapping(value = "/{username}")
+    public User getUserByUserName(@PathVariable String username){
+        return userService.findUserByUsername(username);
     }
 }
 

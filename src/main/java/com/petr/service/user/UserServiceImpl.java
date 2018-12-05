@@ -136,8 +136,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     @Override
     public void addPhoto(MultipartFile multipartFile, Long userId, DocumentType documentType) {
-//        User user = getById(userId);
-        User user = userRepository.getOne(userId);
+        User user = getById(userId);
+//        User user = userRepository.getOne(userId);
         if (user == null) {
             throw new UserNotFoundException();
         }
@@ -186,8 +186,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findUserByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findUserByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -253,8 +253,8 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public User findUserByUsername(String email) {
+        return userRepository.findUserByUsername(email);
     }
 
     @Override
