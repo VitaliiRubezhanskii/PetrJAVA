@@ -67,6 +67,8 @@ public class UserCreateDto {
     private String card;
 
     private String password;
+    private String username;
+    private String photo;
 
 //    @NotNull
     private Address address;

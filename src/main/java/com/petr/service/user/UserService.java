@@ -5,9 +5,12 @@ import com.petr.persistence.entity.User;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -22,15 +25,7 @@ public interface UserService {
 
     Long create(UserCreateDto dto);
 
-//    void addPasswordFirstPage(MultipartFile multipartFile, Long userId);
-//
-//    void addPasswordSecondPage(MultipartFile multipartFile, Long userId);
-//
-//    void addPasswordLastPage(MultipartFile multipartFile, Long userId);
-//
-//    void addPhotoInn(MultipartFile multipartFile, Long userId);
-
-    void addPhoto(MultipartFile multipartFile, Long id, DocumentType documentType);
+    void uploadFiles(Long userId, HttpServletRequest request);
 
     void setVerify(boolean verify, Long userId);
 

@@ -21,17 +21,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("userService")
 public class UserServiceImpl extends UserSearchSpecification implements UserService, UserDetailsService {
@@ -78,91 +77,24 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
     }
 
-//    @Override
-//    public void addPasswordFirstPage(MultipartFile multipartFile, Long userId) {
-//        User user = getById(userId);
-//        if (user == null) {
-//            throw new UserNotFoundException();
-//        }
-//        if (user.getPasswordFirstPage() != null) {
-//            throw new PassportFistPageException();
-//        }
-//        String photoPath = savePhoto(multipartFile, user);
-//        user.setPasswordFirstPage(photoPath);
-//        userRepository.save(user);
-//    }
-//
-//    @Override
-//    public void addPasswordSecondPage(MultipartFile multipartFile, Long userId) {
-//        User user = getById(userId);
-//        if (user == null) {
-//            throw new UserNotFoundException();
-//        }
-//        if (user.getPasswordSecondPage() != null) {
-//            throw new PassportSecondPageException();
-//        }
-//        String photoPath = savePhoto(multipartFile, user);
-//        user.setPasswordSecondPage(photoPath);
-//        userRepository.save(user);
-//    }
-//
-//    @Override
-//    public void addPasswordLastPage(MultipartFile multipartFile, Long userId) {
-//        User user = getById(userId);
-//        if (user == null) {
-//            throw new UserNotFoundException();
-//        }
-//        if (user.getPasswordLastPage() != null) {
-//            throw new PassportLastPageException();
-//        }
-//        String photoPath = savePhoto(multipartFile, user);
-//        user.setPasswordLastPage(photoPath);
-//        userRepository.save(user);
-//    }
-//
-//    @Override
-//    public void addPhotoInn(MultipartFile multipartFile, Long userId) {
-//        User user = getById(userId);
-//        if (user == null) {
-//            throw new UserNotFoundException();
-//        }
-//        if (user.getPhotoInn() != null) {
-//            throw new PhotoInnException();
-//        }
-//        String photoPath = savePhoto(multipartFile, user);
-//        user.setPhotoInn(photoPath);
-//        userRepository.save(user);
-//    }
-
     @Override
-    public void addPhoto(MultipartFile multipartFile, Long userId, DocumentType documentType) {
-        User user = getById(userId);
-//        User user = userRepository.getOne(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (user.getPhoto() != null) {
-            throw new PhotoException();
-        }
-        String photoPath = savePhoto(multipartFile, user);
+    public void uploadFiles(Long userId, HttpServletRequest request) {
+        MultipartHttpServletRequest multiPartRequest;
+        List<MultipartFile> files = new ArrayList<>();
+        try {
+            multiPartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> itr = multiPartRequest.getFileNames();
 
-        if (documentType.equals(DocumentType.PERSONAL_PHOTO)){
-            user.setPhoto(photoPath);
-        }
-        if (documentType.equals(DocumentType.PASSPORT_FIRST_PAGE)){
-            user.setPasswordFirstPage(photoPath);
-        }
-        if (documentType.equals(DocumentType.PASSPORT_SECOND_PAGE)){
-            user.setPasswordSecondPage(photoPath);
-        }
-        if (documentType.equals(DocumentType.PASSPORT_LAST_PAGE)){
-            user.setPasswordSecondPage(photoPath);
-        }
-        if (documentType.equals(DocumentType.INN)){
-            user.setPhotoInn(photoPath);
-        }
+            while (itr.hasNext()) {
+                MultipartFile mFile = multiPartRequest.getFile(itr.next());
+                System.out.println("FileName is " + mFile.getOriginalFilename() + "for user id=" + userId);
+                files.add(mFile);
+            }
+            addPhoto(files,userId);
 
-        userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -192,52 +124,6 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
             throw new UsernameNotFoundException("Invalid username or password.");
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
-    }
-
-    private String savePhoto(MultipartFile multipartFile, User user) {
-        String photoPath = null;
-        try {
-            Files.createDirectories(Paths.get(new File("./img2/" + user.getId()).getAbsolutePath()));
-            byte[] bytes = multipartFile.getBytes();
-            photoPath = Paths.get(new File("img2/" + user.getId()).getAbsolutePath())
-                    + "/"
-                    + String.valueOf(Instant.now().getEpochSecond())
-                    + multipartFile.getOriginalFilename();
-
-            Path path = Paths.get(photoPath);
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return photoPath;
-    }
-
-    private void validateUser(UserCreateDto createDto) {
-        if (bankService.getById(createDto.getBank()).isDeleted()){
-            throw new BankDeletedException();
-        }
-        if (userRepository.existsByEmail(createDto.getEmail())) {
-            throw new UserEmailExistsException();
-        }
-        if (userRepository.existsByInn(createDto.getInn().toLowerCase())) {
-            throw new UserINNExistsException();
-        }
-        if (userRepository.existsByPassport(createDto.getPassport().toLowerCase())) {
-            throw new UserPassportExistsException();
-        }
-        if (userRepository.existsByPhone(createDto.getPhone().toLowerCase())) {
-            throw new UserPhoneExistsException();
-        }
-    }
-
-    private Set<SimpleGrantedAuthority> getAuthority(User user) {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            //authorities.add(new SimpleGrantedAuthority(roleType.getName()));
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
-        return authorities;
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override
@@ -273,5 +159,69 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         editedUser.setPhone(user.getPhone());
         editedUser.setEmail(user.getEmail());
         userRepository.save(editedUser);
+    }
+
+    private String savePhoto(MultipartFile multipartFile, String username) {
+        String photoPath=null;
+        try {
+            Files.createDirectories(Paths.get(new File("./img2/" + username).getAbsolutePath()));
+            byte[] bytes = multipartFile.getBytes();
+             photoPath = Paths.get(new File("img2/" + username).getAbsolutePath())
+                    + "/"
+                    + String.valueOf(Instant.now().getEpochSecond())
+                    + multipartFile.getOriginalFilename();
+
+            Path path = Paths.get(photoPath);
+            Files.write(path, bytes);
+
+        }
+             catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        return photoPath;
+    }
+
+    private void addPhoto(List<MultipartFile> multipartFiles, Long userId) {
+        User user = getById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (user.getPhoto() != null) {
+            throw new PhotoException();
+        }
+        user.setPhoto(savePhoto(multipartFiles.get(0), user.getUsername()));
+        user.setPhotoInn(savePhoto(multipartFiles.get(1), user.getUsername()));
+        user.setPasswordFirstPage(savePhoto(multipartFiles.get(2), user.getUsername()));
+        user.setPasswordSecondPage(savePhoto(multipartFiles.get(3), user.getUsername()));
+        user.setPasswordLastPage(savePhoto(multipartFiles.get(4), user.getUsername()));
+        userRepository.save(user);
+
+    }
+
+    private void validateUser(UserCreateDto createDto) {
+        if (bankService.getById(createDto.getBank()).isDeleted()){
+            throw new BankDeletedException();
+        }
+        if (userRepository.existsByEmail(createDto.getEmail())) {
+            throw new UserEmailExistsException();
+        }
+        if (userRepository.existsByInn(createDto.getInn().toLowerCase())) {
+            throw new UserINNExistsException();
+        }
+        if (userRepository.existsByPassport(createDto.getPassport().toLowerCase())) {
+            throw new UserPassportExistsException();
+        }
+        if (userRepository.existsByPhone(createDto.getPhone().toLowerCase())) {
+            throw new UserPhoneExistsException();
+        }
+    }
+
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
     }
 }

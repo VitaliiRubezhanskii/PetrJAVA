@@ -11,12 +11,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600) //http://localhost:4200
 @RestController
@@ -45,8 +57,6 @@ public class UserController {
         userService.editUser(user);
     }
 
-
-
     //user
     @PutMapping(value = "/new")
     public Long create(@RequestBody @Valid UserCreateDto dto) {
@@ -66,40 +76,23 @@ public class UserController {
         userService.setDeleted(isDeleted, id);
     }
 
-    //user
-//    @PostMapping(value = "/addPasswordFirstPage/{id}")
-//    public void addFirstPhoto(@RequestParam("file") MultipartFile file,
-//                              @PathVariable("id") Long id) {
-//        userService.addPasswordFirstPage(file, id);
-//    }
-//
-//    //user
-//    @PostMapping(value = "/addPasswordSecondPage/{id}")
-//    public void addSecondPhoto(@RequestParam("file") MultipartFile file,
-//                               @PathVariable("id") Long id) {
-//        userService.addPasswordSecondPage(file, id);
-//    }
-//
-//    //user
-//    @PostMapping(value = "/addPasswordLastPage/{id}")
-//    public void addLastPhoto(@RequestParam("file") MultipartFile file,
-//                             @PathVariable("id") Long id) {
-//        userService.addPasswordLastPage(file, id);
-//    }
-//
-//    //user
-//    @PostMapping(value = "/addPhotoInn/{inn}")
-//    public void addPhotoInn(@RequestParam("file") MultipartFile file,
-//                            @PathVariable("inn") Long inn) {
-//        userService.addPhotoInn(file, inn);
-//    }
+    @PostMapping(value = "/user/{id}/document")
+    public void uploadFiles(@PathVariable("id") Long id, HttpServletRequest request){
+        userService.uploadFiles(id, request);
+    }
 
-    //user
-    @PatchMapping(value = "/user/{id}/document/{documentType}")
-    public void addPhoto(@RequestParam("file") MultipartFile file,
-                         @PathVariable("id") Long id,
-                         @PathVariable("documentType") String documentType) {
-        userService.addPhoto(file, id, DocumentType.valueOf(documentType));
+    @GetMapping(value = "/user/{id}/document")
+    public ResponseEntity<byte []> downloadFile(@PathVariable("id") Long id){
+        User user=userService.getById(id);
+        File file = new File("/home/vitalii/Downloads/photoofmine.jpg");
+
+        try {
+            FileInputStream inputStream=new FileInputStream(file);
+
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                    .body(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+        }catch (IOException ex){ex.printStackTrace();}
+        return  ResponseEntity.status(404).body(null);
     }
 
     @GetMapping(value = "/{username}")
