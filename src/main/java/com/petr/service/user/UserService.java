@@ -1,16 +1,14 @@
 package com.petr.service.user;
 
-import com.petr.persistence.entity.DocumentType;
+
 import com.petr.persistence.entity.User;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService {
@@ -26,6 +24,8 @@ public interface UserService {
     Long create(UserCreateDto dto);
 
     void uploadFiles(Long userId, HttpServletRequest request);
+
+    void downloadFiles(Long userId, String type, HttpServletResponse response);
 
     void setVerify(boolean verify, Long userId);
 

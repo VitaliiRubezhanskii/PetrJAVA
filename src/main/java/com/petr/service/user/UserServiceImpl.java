@@ -15,15 +15,20 @@ import com.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -94,6 +99,38 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void downloadFiles(Long userId, String type, HttpServletResponse response) {
+        User user = getById(userId);
+        String pathToDocument="";
+        switch (type){
+            case "photo":
+                pathToDocument = user.getPhoto();
+                break;
+            case "inn":
+                pathToDocument = user.getPhotoInn();
+                break;
+            case "pass_first":
+                pathToDocument = user.getPasswordFirstPage();
+                break;
+            case "pass_second":
+                pathToDocument = user.getPasswordSecondPage();
+                break;
+            case "pass_last":
+                pathToDocument = user.getPasswordLastPage();
+                break;
+        }
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(Paths.get(pathToDocument)));
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" +user.getUsername()+ ".jpg");
+            StreamUtils.copy(inputStream, response.getOutputStream());
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 
