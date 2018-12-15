@@ -20,6 +20,8 @@ public interface SurveyService {
 
     Long create(SurveyCreateDto dto);
 
+    Long save(Survey survey);
+
     void setStatus(Long id, Status status);
 
     Map<Long, Long> getSurveyByUser(Long userId, long location);

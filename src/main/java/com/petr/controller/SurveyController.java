@@ -24,10 +24,10 @@ public class SurveyController {
     private final SurveyService surveyService;
 
     //admin
-    @PostMapping(value = "/new")
-    public Long create(@RequestBody @Valid SurveyCreateDto dto) {
-        return surveyService.create(dto);
-    }
+//    @PostMapping(value = "/new")
+//    public Long create(@RequestBody @Valid SurveyCreateDto dto) {
+//        return surveyService.create(dto);
+//    }
 
     //admin
 //    @GetMapping
@@ -35,6 +35,12 @@ public class SurveyController {
 //                                             @PageableDefault(size = 5) Pageable pageable) {
 //        return surveyService.getAll(dto, pageable);
 //    }
+
+    @PostMapping(value = "/new")
+    public Long create(@RequestBody Survey survey) {
+        return surveyService.save(survey);
+    }
+
 
     @GetMapping
     public List<Survey> getSurveys(){
@@ -44,26 +50,31 @@ public class SurveyController {
 
 
     //admin
-    @PostMapping("/deleted/{id}")
+    @PostMapping(value = "/deleted/{id}")
     public void setDeleted(@PathVariable("id") Long id) {
         surveyService.setStatus(id, Status.DELETED);
     }
 
     //admin
-    @PostMapping("/active/{id}")
+    @PostMapping(value = "/active/{id}")
     public void setActive(@PathVariable("id") Long id) {
         surveyService.setStatus(id, Status.ACTIVE);
     }
 
     //admin
-    @PostMapping("/unpublish/{id}")
+    @PostMapping(value = "/unpublish/{id}")
     public void setUnpublish(@PathVariable("id") Long id) {
         surveyService.setStatus(id, Status.UNPUBLISH);
     }
 
     //user
-    @GetMapping("/getSurveyByUser/{userId}/{location}")
-    public Map<Long, Long> getSurveyById(@PathVariable("userId") Long userId, @PathVariable("location") Long location){
+    @GetMapping(value = "/getSurveyByUser/{userId}/{location}")
+    public Map<Long, Long> getSurveyByUserId(@PathVariable("userId") Long userId, @PathVariable("location") Long location){
         return surveyService.getSurveyByUser(userId, location);
+    }
+
+    @GetMapping(value = "/survey/{surveyId}")
+    public Survey getSurveyById(@PathVariable("surveyId") Long surveyId){
+        return surveyService.getById(surveyId);
     }
 }

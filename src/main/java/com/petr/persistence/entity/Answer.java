@@ -25,7 +25,7 @@ public class Answer {
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 
-    private Long date = new Date().getTime();
+    private String date = new Date().toString();
 
     @ManyToOne
     @JoinColumn(name = "question_id")

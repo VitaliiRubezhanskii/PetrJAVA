@@ -25,8 +25,8 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 
-    @Enumerated(EnumType.STRING)
-    private QuestionType type;
+//    @Enumerated(EnumType.STRING)
+    private String type;
 
     private Integer min;
 
@@ -34,7 +34,7 @@ public class Question {
 
     private Boolean required;
 
-    private Long date = new Date().getTime();
+    private String date = new Date().toString();
 
     @ManyToOne
     @JoinColumn(name = "survey_id")

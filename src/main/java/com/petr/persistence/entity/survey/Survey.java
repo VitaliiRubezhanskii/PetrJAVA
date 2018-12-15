@@ -30,13 +30,13 @@ public class Survey {
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNPUBLISH;
 
-    private Long date = new Date().getTime();
+    private String date = new Date().toString();
 
     private Integer count;
 
     private Integer passed = 0;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private List<Question> questions;
 
     @OneToMany(mappedBy = "survey")
