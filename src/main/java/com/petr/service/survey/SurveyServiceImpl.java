@@ -114,4 +114,9 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
             throw new SurveyExistsException();
         }
     }
+
+    @Override
+    public List<Survey> findAll() {
+        return surveyRepository.findAll();
+    }
 }
