@@ -57,7 +57,7 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
     public Long create(AnswerCreateDto dto, Long questionId) {
         validateAnswer(dto, questionId);
         Question question = questionService.getById(questionId);
-        if (question.getType().equals(QuestionType.TEXT)){
+        if (question.getType().equals(QuestionType.LONG_ANSWER)){
             throw new QuestionCanNotHasAnswerException();
         }
         Answer answer = answerMapper.toEntity(dto);
@@ -87,8 +87,8 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
         if (questionService.getById(questionId).getStatus().equals(Status.DELETED)){
             throw new QuestionDeletedException();
         }
-        if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
-            throw new AnswerExistsException();
-        }
+//        if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
+//            throw new AnswerExistsException();
+//        }
     }
 }

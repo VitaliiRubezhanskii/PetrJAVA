@@ -16,6 +16,8 @@ public interface QuestionService {
 
     Question getById(Long id);
 
+    Question create(Question question);
+
     Page<QuestionOutcomeDto> getAll(QuestionFindDto dto, Pageable pageable);
 
     Long create(QuestionCreateDto dto, Long surveyId);

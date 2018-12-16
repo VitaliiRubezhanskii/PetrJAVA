@@ -25,7 +25,7 @@ public class QuestionOutcomeDto {
 
     private List<Long> answers;
 
-    private Long date;
+    private String date;
 
     private Boolean required;
 }

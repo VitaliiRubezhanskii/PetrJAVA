@@ -1,12 +1,10 @@
 package com.petr.persistence.entity.survey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.SurveyResult;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,6 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Survey {
 
     @Id
@@ -36,13 +35,15 @@ public class Survey {
 
     private Integer passed = 0;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Question> questions;
 
     @OneToMany(mappedBy = "survey")
+    @JsonIgnore
     private List<SurveyResult> surveyResults;
 
     @OneToMany(mappedBy = "survey")
+    @JsonIgnore
     private List<SurveyLimit> surveyLimits;
 
 

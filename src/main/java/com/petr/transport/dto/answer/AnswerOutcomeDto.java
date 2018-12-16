@@ -14,5 +14,5 @@ public class AnswerOutcomeDto {
 
     private Long question;
 
-    private Long date;
+    private String date;
 }

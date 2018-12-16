@@ -16,7 +16,7 @@ public class SurveyOutcomeDto {
 
     private List<Long> questions;
 
-    private Long date;
+    private String date;
 
     private List<Long> surveyLimits;
 

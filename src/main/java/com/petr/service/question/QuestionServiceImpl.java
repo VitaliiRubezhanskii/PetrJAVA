@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -73,16 +74,16 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
         if (surveyService.getById(surveyId).getStatus().equals(Status.DELETED)){
             throw new SurveyDeletedException();
         }
-        if (surveyService.getById(surveyId).getSurveyLimits().isEmpty()){
-            throw new SurveyHasNotSurveyLimitException();
-        }
+//        if (surveyService.getById(surveyId).getSurveyLimits().isEmpty()){
+//            throw new SurveyHasNotSurveyLimitException();
+//        }
         if (questionRepository.existsByTextAndSurveyId(dto.getText(), surveyId)) {
             throw new QuestionExistsException();
         }
-        if (dto.getMin()>dto.getMax()){
-            throw  new QuestionMinMaxException();
-        }
-        if (dto.getType().equals(QuestionType.TEXT)){
+//        if (dto.getMin()>dto.getMax()){
+//            throw  new QuestionMinMaxException();
+//        }
+        if (dto.getType().equals(QuestionType.LONG_ANSWER)){
             if (dto.getMin()>1||dto.getMax()>1){
                 throw new QuestionMinNotEqualsMaxException();
             }
@@ -99,5 +100,10 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
             userIds.add(question.getId());
         }
         return userIds;
+    }
+
+    @Override
+    public Question create(Question question) {
+        return questionRepository.save(question);
     }
 }

@@ -19,6 +19,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String text;
 
     @Column(name = "status", nullable = false)

@@ -1,5 +1,6 @@
 package com.petr.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petr.persistence.entity.survey.Survey;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class Question {
     private Status status = Status.UNPUBLISH;
 
 //    @Enumerated(EnumType.STRING)
-    private String type;
+    private QuestionType type;
 
     private Integer min;
 
@@ -36,8 +37,9 @@ public class Question {
 
     private String date = new Date().toString();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "survey_id")
+    @JsonIgnore
     private Survey survey;
 
     @OneToMany(mappedBy = "question")

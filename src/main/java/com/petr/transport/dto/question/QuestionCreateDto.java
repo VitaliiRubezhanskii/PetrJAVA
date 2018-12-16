@@ -11,21 +11,21 @@ import java.util.List;
 @Data
 public class QuestionCreateDto {
 
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String text;
 
-    @NotNull
-    @Min(1)
+//    @NotNull
+//    @Min(1)
     private Integer min;
 
-    @NotNull
-    @Min(1)
+//    @NotNull
+//    @Min(1)
     private Integer max ;
 
-    @NotNull
+//    @NotNull
     private Boolean required;
 
-    @NotNull
+//    @NotNull
     private QuestionType type;
 }

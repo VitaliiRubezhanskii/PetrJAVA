@@ -20,7 +20,7 @@ public interface SurveyService {
 
     Long create(SurveyCreateDto dto);
 
-    Long save(Survey survey);
+    Survey save(Survey survey);
 
     void setStatus(Long id, Status status);
 

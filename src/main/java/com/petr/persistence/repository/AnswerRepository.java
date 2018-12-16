@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long>, JpaSpecificationExecutor<Answer> {
 
-   boolean existsByTextAndQuestionId(String text, Long id);
+   boolean existsByTextAndQuestionId(String value, Long id);
 }

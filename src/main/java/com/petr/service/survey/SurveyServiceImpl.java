@@ -121,7 +121,7 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
     }
 
     @Override
-    public Long save(Survey survey) {
-        return surveyRepository.save(survey).getId();
+    public Survey save(Survey survey) {
+        return surveyRepository.save(survey);
     }
 }

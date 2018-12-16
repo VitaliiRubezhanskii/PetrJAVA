@@ -1,5 +1,6 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.Status;
 import com.petr.service.question.QuestionService;
 import com.petr.transport.dto.question.QuestionCreateDto;
@@ -12,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/questions")
@@ -26,7 +29,10 @@ public class QuestionController {
         return questionService.create(dto, surveyId);
     }
 
-
+    @PostMapping(value = "/new")
+    public void create(@RequestBody Question question){
+         questionService.create(question);
+    }
 
 
     @GetMapping
