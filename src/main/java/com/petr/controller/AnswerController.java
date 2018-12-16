@@ -1,7 +1,11 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Answer;
+import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.Status;
+import com.petr.persistence.repository.AnswerRepository;
 import com.petr.service.answer.AnswerService;
+import com.petr.service.question.QuestionService;
 import com.petr.transport.dto.answer.AnswerCreateDto;
 import com.petr.transport.dto.answer.AnswerFindDto;
 import com.petr.transport.dto.answer.AnswerOutcomeDto;
@@ -19,12 +23,22 @@ import javax.validation.Valid;
 public class AnswerController {
 
     private final AnswerService answerService;
+    private final QuestionService questionService;
+    private final AnswerRepository answerRepository;
 
-    @PutMapping("/{questionId}")
-    public Long create(@RequestBody @Valid AnswerCreateDto dto,
-                       @PathVariable("questionId") Long questionId) {
-        return answerService.create(dto, questionId);
+//    @PutMapping("/{questionId}")
+//    public Long create(@RequestBody @Valid AnswerCreateDto dto,
+//                       @PathVariable("questionId") Long questionId) {
+//        return answerService.create(dto, questionId);
+//    }
+
+    @PutMapping(value = "/{questionId}")
+    public Long create(@RequestBody Answer answer,@PathVariable("questionId") Long questionId ){
+        Question question = questionService.getById(questionId);
+        answer.setQuestion(question);
+        return answerRepository.save(answer).getId();
     }
+
 
     @GetMapping
     public Page<AnswerOutcomeDto> getQuestions(AnswerFindDto dto,

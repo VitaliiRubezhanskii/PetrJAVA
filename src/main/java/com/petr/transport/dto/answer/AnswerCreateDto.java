@@ -6,9 +6,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+
 public class AnswerCreateDto {
 
 //    @NotBlank
 //    @NotNull
-    private String text;
+    private String value;
 }

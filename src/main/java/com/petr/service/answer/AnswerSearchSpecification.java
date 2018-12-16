@@ -17,7 +17,7 @@ public abstract class AnswerSearchSpecification extends AbstractSearchSpecificat
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "id", dto.getId()));
             predicates.add(toEqualsPredicate(root, criteriaBuilder, "status", dto.getStatus()));
-            predicates.add(toLikePredicate(root, criteriaBuilder, "text", dto.getText()));
+            predicates.add(toLikePredicate(root, criteriaBuilder, "value", dto.getValue()));
             predicates.add(toEqualsPredicateId(root, criteriaBuilder, "question", dto.getQuestion()));
             predicates.add(toPredicateBetween(root, criteriaBuilder, "date", dto.getStartDate(), dto.getFinishDate()));
             Object[] rawPredicates = predicates.stream().filter(Objects::nonNull).toArray();

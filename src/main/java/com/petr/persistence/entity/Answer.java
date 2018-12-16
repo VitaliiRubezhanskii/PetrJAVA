@@ -1,5 +1,6 @@
 package com.petr.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Answer {
     private Long id;
 
 
-    private String text;
+    private String value;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -30,5 +31,6 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @JsonIgnore
     private Question question;
 }

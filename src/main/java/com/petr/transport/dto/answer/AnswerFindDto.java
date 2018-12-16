@@ -8,7 +8,7 @@ public class AnswerFindDto {
 
     private Long id;
 
-    private String text;
+    private String value;
 
     private Status status;
 
