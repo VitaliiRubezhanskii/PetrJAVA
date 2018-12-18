@@ -24,5 +24,7 @@ public interface QuestionService {
 
     void setStatus(Long id, Status status);
 
+    void deleteQuestion(Long id);
+
     List<Long> getIdFromEntity(List<Question> questions);
 }

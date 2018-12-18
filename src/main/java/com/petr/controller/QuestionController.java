@@ -58,4 +58,10 @@ public class QuestionController {
     public void setUnpublish(@PathVariable("id") Long id) {
         questionService.setStatus(id, Status.UNPUBLISH);
     }
+
+    @DeleteMapping(value = "/delete/question/{id}")
+    public void deleteQuestion(@PathVariable("id") Long id){
+        questionService.deleteQuestion(id);
+    }
+
 }
