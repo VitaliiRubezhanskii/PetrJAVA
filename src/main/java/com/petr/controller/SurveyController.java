@@ -51,22 +51,22 @@ public class SurveyController {
 
 
     //admin
-    @PostMapping(value = "/deleted/{id}")
-    public void setDeleted(@PathVariable("id") Long id) {
-        surveyService.setStatus(id, Status.DELETED);
+    @PostMapping(value = "/survey/{id}/status/{surveyStatus}")
+    public void setSurveyStatus(@PathVariable("id") Long id, @PathVariable("surveyStatus") Status surveyStatus ) {
+        surveyService.setStatus(id, surveyStatus);
     }
 
-    //admin
-    @PostMapping(value = "/active/{id}")
-    public void setActive(@PathVariable("id") Long id) {
-        surveyService.setStatus(id, Status.ACTIVE);
-    }
-
-    //admin
-    @PostMapping(value = "/unpublish/{id}")
-    public void setUnpublish(@PathVariable("id") Long id) {
-        surveyService.setStatus(id, Status.UNPUBLISH);
-    }
+//    //admin
+//    @PostMapping(value = "/active/{id}")
+//    public void setActive(@PathVariable("id") Long id) {
+//        surveyService.setStatus(id, Status.ACTIVE);
+//    }
+//
+//    //admin
+//    @PostMapping(value = "/unpublish/{id}")
+//    public void setUnpublish(@PathVariable("id") Long id) {
+//        surveyService.setStatus(id, Status.UNPUBLISH);
+//    }
 
     //user
     @GetMapping(value = "/getSurveyByUser/{userId}/{location}")
@@ -78,4 +78,7 @@ public class SurveyController {
     public Survey getSurveyById(@PathVariable("surveyId") Long surveyId){
         return surveyService.getById(surveyId);
     }
+
+
+
 }
