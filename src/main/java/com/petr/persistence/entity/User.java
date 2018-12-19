@@ -120,6 +120,11 @@ public class User implements Serializable {
     private Set<Role> roles;
 
 
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.ALL})
+    @JsonIgnore
+    private List<Answer> answers;
+
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

@@ -4,12 +4,10 @@ import com.petr.exception.answer.AnswerExistsException;
 import com.petr.exception.answer.AnswerNotFoundException;
 import com.petr.exception.question.QuestionCanNotHasAnswerException;
 import com.petr.exception.question.QuestionDeletedException;
-import com.petr.persistence.entity.Answer;
-import com.petr.persistence.entity.Question;
-import com.petr.persistence.entity.QuestionType;
-import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.*;
 import com.petr.persistence.repository.AnswerRepository;
 import com.petr.service.question.QuestionService;
+import com.petr.service.user.UserService;
 import com.petr.transport.dto.answer.AnswerCreateDto;
 import com.petr.transport.dto.answer.AnswerFindDto;
 import com.petr.transport.dto.answer.AnswerOutcomeDto;
@@ -18,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,10 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
 
     @Autowired
     private AnswerRepository answerRepository;
-
+    @Autowired
     private QuestionService questionService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public void setSurveyService(QuestionService questionService) {
@@ -75,6 +76,16 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
             answerIds.add(answer.getId());
         }
         return answerIds;
+    }
+
+    @Override
+    public Answer save(Long answerId, Long userId){
+        Answer answerToSave = getById(answerId);
+        User user = userService.getById(userId);
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        answerToSave.setUsers(users);
+        return answerRepository.save(answerToSave);
     }
 
     @Override

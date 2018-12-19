@@ -15,6 +15,8 @@ import java.util.List;
 public interface AnswerService {
     Answer getById(Long id);
 
+    Answer save(Long answerId, Long userId);
+
     Page<AnswerOutcomeDto> getAll(AnswerFindDto dto, Pageable pageable);
 
     Long create(AnswerCreateDto dto, Long questionId);
