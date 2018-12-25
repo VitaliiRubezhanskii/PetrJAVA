@@ -88,11 +88,11 @@ public class QuestionServiceImpl extends QuestionSearchSpecification implements 
 //        if (dto.getMin()>dto.getMax()){
 //            throw  new QuestionMinMaxException();
 //        }
-        if (dto.getType().equals(QuestionType.LONG_ANSWER)){
-            if (dto.getMin()>1||dto.getMax()>1){
-                throw new QuestionMinNotEqualsMaxException();
-            }
-        }
+//        if (dto.getType().equals(QuestionType.LONG_ANSWER)){
+//            if (dto.getMin()>1||dto.getMax()>1){
+//                throw new QuestionMinNotEqualsMaxException();
+//            }
+//        }
     }
 
     @Override
