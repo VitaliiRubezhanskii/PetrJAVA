@@ -1,6 +1,7 @@
 package com.petr.controller;
 
 import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.User;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.service.survey.SurveyService;
 import com.petr.transport.dto.survey.SurveyCreateDto;
@@ -54,6 +55,12 @@ public class SurveyController {
     @PostMapping(value = "/survey/{id}/status/{surveyStatus}")
     public void setSurveyStatus(@PathVariable("id") Long id, @PathVariable("surveyStatus") Status surveyStatus ) {
         surveyService.setStatus(id, surveyStatus);
+    }
+
+
+    @GetMapping(value = "/bylimits/{userId}")
+    public List<Survey> getSurveysMatchingUserLimits(@PathVariable("userId") Long userId){
+        return surveyService.findSurveysByUserLimit(userId);
     }
 
 //    //admin

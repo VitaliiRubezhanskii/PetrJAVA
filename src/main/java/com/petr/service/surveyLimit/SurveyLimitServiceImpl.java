@@ -7,6 +7,7 @@ import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.service.survey.SurveyService;
 import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
+import com.petr.transport.dto.survetLimit.SurveyLimitDto;
 import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
 import com.petr.transport.dto.survetLimit.SurveyLimitOutcomeDto;
 import com.petr.transport.mapper.SurveyLimitMapper;
@@ -22,17 +23,17 @@ import java.util.List;
 public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification implements SurveyLimitService {
 
     private SurveyLimitMapper surveyLimitMapper;
+    @Autowired
+    private SurveyService surveyService;
+
+    @Autowired
+    private SurveyLimitRepository surveyLimitRepository;
 
     @Autowired
     public void setSurveyLimitMapper(SurveyLimitMapper surveyLimitMapper) {
         this.surveyLimitMapper = surveyLimitMapper;
     }
 
-    @Autowired
-    private SurveyService surveyService;
-
-    @Autowired
-    private SurveyLimitRepository surveyLimitRepository;
 
     @Override
     public SurveyLimit getById(Long id) {
@@ -58,9 +59,45 @@ public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification imple
     }
 
     @Override
+    public List<SurveyLimit> save(SurveyLimitDto dto, Long surveyId) {
+        List<SurveyLimit> limitsForFirstGender = new ArrayList<>();
+        List<SurveyLimit> limitsForSecondGender = new ArrayList<>();
+        List<SurveyLimit> resultingLimits = new ArrayList<>();
+        for (String group : dto.getAgeGroup()){
+            SurveyLimit limit = new SurveyLimit();
+            limit.setLocation(dto.getRegion());
+            limit.setSurvey(surveyService.getById(dto.getSurvey()));
+            limit.setGender(dto.getGender().get(0));
+            limit.setMinAge(Integer.parseInt(group.substring(0,2)));
+            limit.setMaxAge(Integer.parseInt(group.substring(5,7)));
+            limit.setCount(dto.getCountOfSurveys());
+            limitsForFirstGender.add(limit);
+        }
+        if (dto.getGender().size()>1) {
+            for (String group : dto.getAgeGroup()) {
+                SurveyLimit limit = new SurveyLimit();
+                limit.setLocation(dto.getRegion());
+                limit.setSurvey(surveyService.getById(dto.getSurvey()));
+                limit.setGender(dto.getGender().get(1));
+                limit.setMinAge(Integer.parseInt(group.substring(0,2)));
+                limit.setMaxAge(Integer.parseInt(group.substring(5,7)));
+                limit.setCount(dto.getCountOfSurveys());
+                limitsForFirstGender.add(limit);
+            }
+        }
+        resultingLimits.addAll(limitsForFirstGender);
+        resultingLimits.addAll(limitsForSecondGender);
+        resultingLimits.forEach(limit-> surveyLimitRepository.save(limit));
+        return resultingLimits;
+
+    }
+
+    @Override
     public void setStatus(Long id, Status status){
         getById(id).setStatus(status);
     }
+
+
 
     @Override
     public List<Long> getIdFromEntity(List<SurveyLimit> surveyLimits) {

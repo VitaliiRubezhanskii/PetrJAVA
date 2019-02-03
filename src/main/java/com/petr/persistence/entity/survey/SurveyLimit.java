@@ -20,7 +20,7 @@ public class SurveyLimit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer location;
+    private String location;
 
     private Integer minAge;
 

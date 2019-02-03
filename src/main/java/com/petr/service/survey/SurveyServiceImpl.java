@@ -5,11 +5,14 @@ import com.petr.exception.survey.SurveyNotFoundException;
 import com.petr.exception.user.UserDeletedException;
 import com.petr.exception.user.UserNotFoundException;
 import com.petr.exception.user.UserNotVerifyException;
+import com.petr.persistence.entity.Gender;
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
+import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.persistence.repository.SurveyRepository;
+import com.petr.service.surveyLimit.SurveyLimitService;
 import com.petr.service.user.UserService;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
@@ -20,10 +23,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyServiceImpl extends SurveySearchSpecification implements SurveyService {
@@ -34,6 +39,8 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
     private UserService userService;
 
     private SurveyMapper surveyMapper;
+    @Autowired
+    private SurveyLimitRepository surveyLimitRepository;
 
     @Autowired
     public void setSurveyMapper(SurveyMapper surveyMapper) {
@@ -90,7 +97,7 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
                     for (SurveyLimit surveyLimit : survey.getSurveyLimits()) {
                         if (surveyLimit.getStatus().equals(Status.ACTIVE)) {
                             if (surveyLimit.getCount() > surveyLimit.getPassed()) {
-                                if (surveyLimit.getLocation() < 1 || surveyLimit.getLocation().equals(location)) {
+                                if (surveyLimit.getLocation() == "" || surveyLimit.getLocation().equals(location)) {
                                     Long userYear = ((new Date().getTime() - user.getBirthDate()) / oneYearInSeconds);
                                     if (userYear >= surveyLimit.getMinAge() && userYear <= surveyLimit.getMaxAge()) {
                                         if (surveyLimit.getGender().equals(user.getGender())) {
@@ -113,6 +120,24 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
         if (surveyRepository.existsByName(dto.getName())) {
             throw new SurveyExistsException();
         }
+    }
+
+    @Override
+    public List<Survey> findSurveysByUserLimit(Long userId) {
+       User user = userService.getById(userId);
+        String location = user.getAddress().getOblast();
+        Instant instant = Instant.ofEpochMilli( user.getBirthDate());
+        LocalDate date = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        int age = Period.between(date, LocalDate.now()).getYears();
+        System.out.println(age);
+        return surveyLimitRepository
+                .findLimitByLocationAnd(location,Gender.MALE)
+                .stream()
+                .filter(limmit -> limmit.getMinAge()>=age || limmit.getMaxAge()<=age+10)
+                .map(limit-> limit.getSurvey())
+                .distinct()
+                .collect(Collectors.toList());
+
     }
 
     @Override

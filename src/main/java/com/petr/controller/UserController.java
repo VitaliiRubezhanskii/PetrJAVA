@@ -23,6 +23,8 @@ public class UserController {
 
     private final SurveyLimitRepository surveyLimitRepository;
 
+    StringBuilder sb = new StringBuilder();
+
 
     //admin
 //    @GetMapping(value = "/all")
@@ -32,7 +34,8 @@ public class UserController {
 
     @GetMapping(value = "/all")
     public List<User> getUsers(){
-        return userService.findAll();
+
+         return userService.findAll();
     }
 
     @PutMapping(value = "/edit")

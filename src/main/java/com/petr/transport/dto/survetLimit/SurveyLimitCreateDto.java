@@ -9,21 +9,22 @@ import javax.validation.constraints.NotNull;
 @Data
 public class SurveyLimitCreateDto {
 
-    @NotNull
+//    @NotNull
     private Integer location;
 
-    @NotNull
-    @Min(1)
+//    @NotNull
+//    @Min(1)
     private Integer minAge;
 
-    @NotNull
-    @Min(1)
+//    @NotNull
+//    @Min(1)
     private Integer maxAge;
 
-    @NotNull
+//    @NotNull
     private Gender gender;
 
-    @NotNull
-    @Min(1)
+
+//    @NotNull
+//    @Min(1)
     private Integer count;
 }
