@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,5 +33,10 @@ public class SurveyResult {
     @OneToMany(mappedBy = "surveyResult")
     private List<QuestionResult> questionResults;
 
-    private Long date;
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+    @Column(name = "bonus")
+    private int bonus;
 }

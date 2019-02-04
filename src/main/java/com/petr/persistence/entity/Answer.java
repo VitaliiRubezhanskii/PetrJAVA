@@ -37,7 +37,7 @@ public class Answer {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "USER_ANSWER", joinColumns = {
-            @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-            @JoinColumn(name = "ANSWER_ID") })
+            @JoinColumn(name = "ANSWER_ID") }, inverseJoinColumns = {
+            @JoinColumn(name = "USER_ID") })
     private List<User> users;
 }

@@ -1,9 +1,12 @@
 package com.petr.controller;
 
 import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.SurveyResult;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.entity.survey.Survey;
 import com.petr.service.survey.SurveyService;
+import com.petr.service.surveyResult.SurveyResultService;
+import com.petr.service.user.UserService;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
 import com.petr.transport.dto.survey.SurveyOutcomeDto;
@@ -15,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -24,6 +29,8 @@ import java.util.Map;
 public class SurveyController {
 
     private final SurveyService surveyService;
+    private final SurveyResultService surveyResultService;
+    private final UserService userService;
 
     //admin
     @PostMapping(value = "/new")
@@ -49,7 +56,17 @@ public class SurveyController {
         return surveyService.findAll();
     }
 
-
+    @PostMapping(value = "/submit/survey/{surveyId}/user/{userId}")
+    public void submitSurvey(@PathVariable("surveyId") Long surveyId, @PathVariable("userId") Long userId){
+        SurveyResult surveyResult = new SurveyResult();
+        Survey survey = surveyService.getById(surveyId);
+        User user = userService.getById(userId);
+        surveyResult.setSurvey(survey);
+        surveyResult.setDate(new java.util.Date());
+        surveyResult.setUser(user);
+        surveyResult.setBonus(10);
+        surveyResultService.submit(surveyResult);
+    }
 
     //admin
     @PostMapping(value = "/survey/{id}/status/{surveyStatus}")
