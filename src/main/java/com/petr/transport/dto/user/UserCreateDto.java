@@ -27,7 +27,7 @@ public class UserCreateDto {
     private String middleName;
 
 //    @NotNull
-    private Long birthDate;
+    private String birthDate;
 
 //    @NotBlank
 //    @NotNull

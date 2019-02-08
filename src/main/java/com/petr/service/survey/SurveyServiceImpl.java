@@ -18,6 +18,7 @@ import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
 import com.petr.transport.dto.survey.SurveyOutcomeDto;
 import com.petr.transport.mapper.SurveyMapper;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,12 +99,12 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
                         if (surveyLimit.getStatus().equals(Status.ACTIVE)) {
                             if (surveyLimit.getCount() > surveyLimit.getPassed()) {
                                 if (surveyLimit.getLocation() == "" || surveyLimit.getLocation().equals(location)) {
-                                    Long userYear = ((new Date().getTime() - user.getBirthDate()) / oneYearInSeconds);
-                                    if (userYear >= surveyLimit.getMinAge() && userYear <= surveyLimit.getMaxAge()) {
-                                        if (surveyLimit.getGender().equals(user.getGender())) {
-                                            surveyIds.put(survey.getId(), surveyLimit.getId());
-                                        }
-                                    }
+//                                    Long userYear = ((new Date().getTime() - user.getBirthDate()) / oneYearInSeconds);
+//                                    if (userYear >= surveyLimit.getMinAge() && userYear <= surveyLimit.getMaxAge()) {
+//                                        if (surveyLimit.getGender().equals(user.getGender())) {
+//                                            surveyIds.put(survey.getId(), surveyLimit.getId());
+//                                        }
+//                                    }
                                 }
                             }
                         }
@@ -126,14 +127,15 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
     public List<Survey> findSurveysByUserLimit(Long userId) {
        User user = userService.getById(userId);
         String location = user.getAddress().getOblast();
-        Instant instant = Instant.ofEpochMilli( user.getBirthDate());
-        LocalDate date = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        String userBirthDate = user.getBirthDate();
+        LocalDate date = LocalDate.parse(userBirthDate.substring(6) + "-" + userBirthDate.substring(3,5) + "-"+userBirthDate.substring(0,2));
         int age = Period.between(date, LocalDate.now()).getYears();
         System.out.println(age);
+        List<SurveyLimit> lims = surveyLimitRepository.findLimitByLocationAnd(location, Gender.MALE);
         return surveyLimitRepository
                 .findLimitByLocationAnd(location,Gender.MALE)
                 .stream()
-                .filter(limmit -> limmit.getMinAge()>=age || limmit.getMaxAge()<=age+10)
+                .filter(limmit -> limmit.getMinAge()<=age && limmit.getMaxAge()>=age)
                 .map(limit-> limit.getSurvey())
                 .distinct()
                 .collect(Collectors.toList());

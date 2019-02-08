@@ -53,7 +53,7 @@ public class User implements Serializable {
 //    private String patronymic;
 
     @Column(nullable = false)
-    private Long birthDate;
+    private String birthDate;
 
     @Column(nullable = false, unique = true)
     private String phone;
