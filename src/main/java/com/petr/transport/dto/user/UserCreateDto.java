@@ -2,6 +2,7 @@ package com.petr.transport.dto.user;
 
 import com.petr.persistence.entity.Address;
 import com.petr.persistence.entity.Gender;
+import com.petr.security.model.Role;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 public class UserCreateDto {
@@ -72,6 +74,7 @@ public class UserCreateDto {
 
 //    @NotNull
     private Address address;
+    private Set<Role> roles;
 
 
 }

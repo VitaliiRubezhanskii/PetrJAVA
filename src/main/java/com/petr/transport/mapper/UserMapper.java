@@ -46,7 +46,9 @@ public abstract class UserMapper {
             @Mapping(target = "password",
                     expression = "java(passwordEncoder.encode(createDto.getPassword()))"),
             @Mapping(target = "username",
-                    expression = "java(createDto.getUsername().toLowerCase())")
+                    expression = "java(createDto.getUsername().toLowerCase())"),
+            @Mapping(target = "roles",
+                    expression = "java(createDto.getRoles())")
 
     })
     public abstract User toEntity(UserCreateDto createDto);

@@ -1,12 +1,23 @@
 package com.petr.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.petr.persistence.entity.User;
+import lombok.*;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Data
+@Table(name = "role")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class Role {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -14,27 +25,8 @@ public class Role {
     @Column
     private String description;
 
-    public long getId() {
-        return id;
-    }
+//    @ManyToMany(mappedBy = "roles")
+//    @JsonIgnore
+//    private Set<User> users;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

@@ -35,5 +35,5 @@ public interface UserService {
 
     User findUserByUsername(String username);
 
-    List<User> firndUsersByParentId(Long parentId);
+    List<User> findUsersByParentId(Long parentId);
 }
