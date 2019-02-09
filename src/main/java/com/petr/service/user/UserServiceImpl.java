@@ -261,4 +261,9 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
         });
         return authorities;
     }
+
+    @Override
+    public List<User> firndUsersByParentId(Long parentId) {
+        return userRepository.findUsersByParentId(getById(parentId));
+    }
 }

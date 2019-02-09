@@ -34,4 +34,6 @@ public interface UserService {
     List<Long> getIdFromEntity(List<User> users);
 
     User findUserByUsername(String username);
+
+    List<User> firndUsersByParentId(Long parentId);
 }

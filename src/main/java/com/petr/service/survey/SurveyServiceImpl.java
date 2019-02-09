@@ -130,8 +130,6 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
         String userBirthDate = user.getBirthDate();
         LocalDate date = LocalDate.parse(userBirthDate.substring(6) + "-" + userBirthDate.substring(3,5) + "-"+userBirthDate.substring(0,2));
         int age = Period.between(date, LocalDate.now()).getYears();
-        System.out.println(age);
-        List<SurveyLimit> lims = surveyLimitRepository.findLimitByLocationAnd(location, Gender.MALE);
         return surveyLimitRepository
                 .findLimitByLocationAnd(location,Gender.MALE)
                 .stream()

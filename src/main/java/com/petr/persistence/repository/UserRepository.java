@@ -4,6 +4,8 @@ import com.petr.persistence.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     boolean existsByPhone(String phone);
@@ -15,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     boolean existsByPassport(String passport);
 
     User findUserByUsername(String username);
+
+    List<User> findUsersByParentId(User user);
 }
