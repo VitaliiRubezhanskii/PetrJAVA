@@ -17,7 +17,7 @@ public abstract class BankMapper {
     @Autowired
     UserService userService;
 
-    @Mapping(target = "name", expression = "java(createDto.getName().toLowerCase())")
+    @Mapping(target = "name", expression = "java(createDto.getName())")
     public abstract Bank toEntity(BankCreateDto createDto);
 
     @Mapping(target = "users", expression = "java(userService.getIdFromEntity(bank.getUsers()))")

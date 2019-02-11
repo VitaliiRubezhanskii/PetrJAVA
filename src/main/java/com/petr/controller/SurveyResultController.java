@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/scoring")
 @RequiredArgsConstructor
-public class ScoringController {
+public class SurveyResultController {
 
     private final SurveyResultService surveyResultService;
     private final UserService userService;
@@ -43,4 +43,10 @@ public class ScoringController {
     public List<LowLevelHierarchy> getAllHierarchy(){
         return surveyResultService.getSurveyResultHierarchy();
     }
+
+    @GetMapping(value = "/results/all")
+    public List<SurveyResult> getAllSurveyResults(){
+        return surveyResultService.getSurveyResultOfAll();
+    }
+
 }
