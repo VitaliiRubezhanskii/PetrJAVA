@@ -22,4 +22,9 @@ public class UserMessageServiceImpl implements UserMessageService {
     public List<UserMessage> getAllMessages() {
         return userMessageRepoisitory.findAll();
     }
+
+    @Override
+    public void delete(UserMessage message) {
+        userMessageRepoisitory.delete(message);
+    }
 }

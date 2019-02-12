@@ -7,5 +7,8 @@ import java.util.List;
 public interface UserMessageService {
 
     void send(UserMessage message);
+
     List<UserMessage> getAllMessages();
+
+    void delete(UserMessage message);
 }

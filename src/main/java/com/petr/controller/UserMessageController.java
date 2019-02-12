@@ -25,4 +25,9 @@ public class UserMessageController {
         return userMessageService.getAllMessages();
     }
 
+    @PutMapping(value = "/delete")
+    public void delete(@RequestBody UserMessage message){
+        userMessageService.delete(message);
+    }
+
 }

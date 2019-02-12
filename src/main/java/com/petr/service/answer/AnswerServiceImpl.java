@@ -18,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerServiceImpl extends AnswerSearchSpecification implements AnswerService {
@@ -101,5 +103,13 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
 //        if (answerRepository.existsByTextAndQuestionId(dto.getText(), questionId)) {
 //            throw new AnswerExistsException();
 //        }
+    }
+
+    @Override
+    public List<Answer> findAnswersByUsers(User user) {
+        List<Answer> answers = new ArrayList<>();
+        List<BigInteger> answerIds = answerRepository.findAllByUser(user.getId());
+        answerIds.forEach(id->answers.add(answerRepository.findById(id.longValue()).get()));
+        return answers;
     }
 }

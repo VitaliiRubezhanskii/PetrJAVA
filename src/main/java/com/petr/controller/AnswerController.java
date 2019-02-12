@@ -59,6 +59,11 @@ public class AnswerController {
         return answerService.getAll(dto, pageable);
     }
 
+    @GetMapping(value = "/user/{userId}")
+    public List<Answer> findAnswersByUser(@PathVariable("userId") Long userId){
+        return answerService.findAnswersByUsers(userService.getById(userId));
+    }
+
     //admin
     @PostMapping("/deleted/{id}")
     public void setDeleted(@PathVariable("id") Long id) {
