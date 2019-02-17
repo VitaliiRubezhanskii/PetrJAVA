@@ -1,10 +1,7 @@
 package com.petr.persistence.entity;
 
 import com.petr.persistence.entity.survey.Survey;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class SurveyResult {
 
     @Id
@@ -39,4 +37,11 @@ public class SurveyResult {
 
     @Column(name = "bonus")
     private int bonus;
+
+    @Override
+    public String toString(){
+        return "";
+    }
+
+
 }

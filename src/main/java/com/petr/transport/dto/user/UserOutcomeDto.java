@@ -1,5 +1,6 @@
 package com.petr.transport.dto.user;
 
+import com.petr.persistence.entity.Address;
 import com.petr.persistence.entity.Gender;
 import com.petr.persistence.entity.RoleType;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class UserOutcomeDto {
 
     private String middleName;
 
-    private Long birthDate;
+    private String birthDate;
 
     private Long date;
 
@@ -31,7 +32,7 @@ public class UserOutcomeDto {
 
     private String email;
 
-    private Integer inn;
+    private String inn;
 
     private String passport;
 
@@ -54,4 +55,10 @@ public class UserOutcomeDto {
     private String card;
 
     private Long parentId;
+
+    private String oblast;
+    private String city;
+    private String street;
+    private String building;
+    private String apartment;
 }

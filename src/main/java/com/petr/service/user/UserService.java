@@ -5,8 +5,11 @@ import com.petr.persistence.entity.User;
 import com.petr.transport.dto.user.UserCreateDto;
 import com.petr.transport.dto.user.UserFindDto;
 import com.petr.transport.dto.user.UserOutcomeDto;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -19,13 +22,13 @@ public interface UserService {
 
     List<User> findAll();
 
-    Page<UserOutcomeDto> getAll(UserFindDto dto, Pageable pageable);
+    List<UserOutcomeDto> getAll();
 
     Long create(UserCreateDto dto);
 
     void uploadFiles(Long userId, HttpServletRequest request);
 
-    void downloadFiles(Long userId, String type, HttpServletResponse response);
+    ResponseEntity<InputStreamResource> downloadFiles(Long userId, String type, HttpServletResponse response);
 
     void setVerify(boolean verify, Long userId);
 

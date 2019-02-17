@@ -13,10 +13,12 @@ import com.petr.transport.dto.user.UserOutcomeDto;
 
 import com.petr.transport.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,6 +38,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("userService")
 public class UserServiceImpl extends UserSearchSpecification implements UserService, UserDetailsService {
@@ -67,12 +70,12 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public Page<UserOutcomeDto> getAll(UserFindDto dto, Pageable pageable) {
-        Page<User> result = userRepository.findAll(
-                userFilter(dto),
-                pageable
-        );
-        return result.map(userMapper::toDto);
+    public List<UserOutcomeDto> getAll() {
+     return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -103,7 +106,7 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     }
 
     @Override
-    public void downloadFiles(Long userId, String type, HttpServletResponse response) {
+    public ResponseEntity<InputStreamResource> downloadFiles(Long userId, String type, HttpServletResponse response) {
         User user = getById(userId);
         String pathToDocument="";
         switch (type){
@@ -123,15 +126,17 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
                 pathToDocument = user.getPasswordLastPage();
                 break;
         }
+        ByteArrayInputStream inputStream=null;
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(Paths.get(pathToDocument)));
-            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            inputStream = new ByteArrayInputStream(Files.readAllBytes(Paths.get(pathToDocument)));
+            response.setContentType("image/jpeg");
             response.setHeader("Content-Transfer-Encoding", "binary");
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" +user.getUsername()+ ".jpg");
-            StreamUtils.copy(inputStream, response.getOutputStream());
+//            StreamUtils.copy(inputStream, response.getOutputStream());
         }catch (IOException ex){
             ex.printStackTrace();
         }
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(inputStream));
     }
 
     @Override
@@ -183,6 +188,7 @@ public class UserServiceImpl extends UserSearchSpecification implements UserServ
     @Override
     public void editUser(User user) {
         User editedUser = getById(user.getId());
+        System.out.println(editedUser);
         System.out.println(user.getMiddleName());
         editedUser.setMiddleName(user.getMiddleName());
         Address address = new Address();

@@ -5,12 +5,19 @@ import com.petr.persistence.entity.User;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.service.user.UserService;
 import com.petr.transport.dto.user.UserCreateDto;
+import com.petr.transport.dto.user.UserFindDto;
+import com.petr.transport.dto.user.UserOutcomeDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.FileInputStream;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -23,7 +30,7 @@ public class UserController {
 
     private final SurveyLimitRepository surveyLimitRepository;
 
-    StringBuilder sb = new StringBuilder();
+
 
 
     //admin
@@ -32,10 +39,14 @@ public class UserController {
 //        return userService.getAll(dto, pageable).getContent();
 //    }
 
-    @GetMapping(value = "/all")
-    public List<User> getUsers(){
+    @GetMapping(value = "/all/structure")
+    public List<UserOutcomeDto> getUsersStructure(){
+         return userService.getAll();
+    }
 
-         return userService.findAll();
+    @GetMapping(value = "/all")
+    public List<User> getUsers() {
+        return userService.findAll();
     }
 
     @PutMapping(value = "/edit")
@@ -67,10 +78,10 @@ public class UserController {
         userService.uploadFiles(id, request);
     }
 
-    @GetMapping(value = "/user/{id}/document/{type}" , produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-    public void downloadFile(@PathVariable("id") Long id,
-                             @PathVariable("type") String type,  HttpServletResponse response) {
-        userService.downloadFiles(id, type, response);
+    @GetMapping(value = "/user/{id}/document/{type}" , produces = {MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") Long id,
+                                       @PathVariable("type") String type, HttpServletResponse response) {
+       return userService.downloadFiles(id, type, response);
 
     }
 

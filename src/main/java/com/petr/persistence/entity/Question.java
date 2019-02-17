@@ -3,6 +3,7 @@ package com.petr.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petr.persistence.entity.survey.Survey;
 import lombok.*;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -44,4 +45,14 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answers;
+
+    @Override
+    public String toString(){
+        return  new ToStringBuilder(this)
+                .append("id: ",id)
+                .append("text: ", text)
+                .append("status: ", status)
+                .append("type: ", type).toString();
+    }
+
 }

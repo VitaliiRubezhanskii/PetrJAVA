@@ -37,9 +37,9 @@ public class Address {
     @Column(name = "apartmentNum")
     private String apartmentNum;
 
-    @OneToMany(mappedBy = "address")
-    @JsonIgnore
-    private Set<User> users;
+//    @OneToMany(mappedBy = "address")
+//    @JsonIgnore
+//    private Set<User> users;
 
 
 }

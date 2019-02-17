@@ -57,7 +57,17 @@ public abstract class UserMapper {
             @Mapping(target = "bank",
                     expression = "java(user.getBank().getId())"),
             @Mapping(target = "parentId",
-                    expression = "java(user.getParentId()==null?null:user.getParentId().getId())")
+                    expression = "java(user.getParentId()==null?null:user.getParentId().getId())"),
+            @Mapping(target = "oblast",
+                    expression = "java(user.getAddress().getOblast())"),
+            @Mapping(target = "city",
+                    expression = "java(user.getAddress().getCity())"),
+            @Mapping(target = "street",
+                    expression = "java(user.getAddress().getStreet())"),
+            @Mapping(target = "building",
+                    expression = "java(user.getAddress().getBuildingNum())"),
+            @Mapping(target = "apartment",
+                    expression = "java(user.getAddress().getApartmentNum())")
     })
 
     public abstract UserOutcomeDto toDto(User user);
