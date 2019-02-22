@@ -64,10 +64,39 @@ public class SurveyResultController {
                .collect(Collectors.groupingBy(SurveyResult::getUser, Collectors.counting()));
        return bonus.keySet()
                 .stream()
-                .map(k->{
-                   UserOutcomeDto userOutcomeDto = userMapper.toDto(k);
-                        userOutcomeDto.setOwnSurveysCount(countOfSurveys.get(k));
-                        userOutcomeDto.setTotalAccountedScoring(bonus.get(k));
+                .map(k-> {
+                    long countOfChildrensSurveys = 0L;
+                    int totalScoreOfChildren = 0;
+                    UserOutcomeDto userOutcomeDto = userMapper.toDto(k);
+                    userOutcomeDto.setOwnSurveysCount(countOfSurveys.get(k));
+                    userOutcomeDto.setTotalAccountedScoring(bonus.get(k));
+                    List<User> childrenUsers = userService.findUsersByParentId(k.getId());
+                       long countOfGrandChildrensSurveys =  childrenUsers
+                                        .stream()
+                                        .map(childrens ->userService.findUsersByParentId(childrens.getId()))
+                                        .flatMap(List::stream)
+                                        .mapToLong(grands->surveyResultService.getSurveyResultByUser(grands).size())
+                                        .sum();
+                       int totalScoreOfGrandChildren =childrenUsers
+                               .stream()
+                               .map(childrens ->userService.findUsersByParentId(childrens.getId()))
+                               .flatMap(List::stream)
+                               .map(surveyResultService::getSurveyResultByUser)
+                               .flatMap(List::stream)
+                               .mapToInt(SurveyResult::getBonus).sum();
+
+                             countOfChildrensSurveys = childrenUsers
+                                    .stream()
+                                    .mapToLong(r -> surveyResultService.getSurveyResultByUser(r).size())
+                                    .sum();
+                             totalScoreOfChildren = childrenUsers
+                                    .stream()
+                                    .flatMap(r -> surveyResultService.getSurveyResultByUser(r).stream())
+                                    .mapToInt(SurveyResult::getBonus).sum();
+                        userOutcomeDto.setCountOfChildrensSurveys(countOfChildrensSurveys);
+                        userOutcomeDto.setTotalScoreOfChildren(totalScoreOfChildren);
+                        userOutcomeDto.setCountOfGrandChildrensSurveys(countOfGrandChildrensSurveys);
+                        userOutcomeDto.setTotalScoreOfGrandChildren(totalScoreOfGrandChildren);
                         return userOutcomeDto;
                 })
                 .collect(Collectors.toList());
