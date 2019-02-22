@@ -107,9 +107,10 @@ public class AnswerServiceImpl extends AnswerSearchSpecification implements Answ
 
     @Override
     public List<Answer> findAnswersByUsers(User user) {
-        List<Answer> answers = new ArrayList<>();
-        List<BigInteger> answerIds = answerRepository.findAllByUser(user.getId());
-        answerIds.forEach(id->answers.add(answerRepository.findById(id.longValue()).get()));
-        return answers;
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        List<Answer> answerIds = answerRepository.findAllByUser(users);
+//        answerIds.forEach(id->answers.add(answerRepository.findById(id.longValue()).get()));
+        return answerIds;
     }
 }

@@ -61,4 +61,6 @@ public class UserOutcomeDto {
     private String street;
     private String building;
     private String apartment;
+    private long ownSurveysCount;
+    private int totalAccountedScoring;
 }

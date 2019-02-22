@@ -14,6 +14,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>, JpaSpecif
 
    boolean existsByValueAndQuestionId(String value, Long id);
 
-   @Query(value = "select answer_id from user_answer where user_answer.user_id = :userId", nativeQuery = true)
-   List<BigInteger> findAllByUser(@Param("userId") Long userId);
+   @Query(value = "select answer from Answer answer inner join answer.users u where u in (:users)")
+   List<Answer> findAllByUser(@Param("users") List<User> user);
 }

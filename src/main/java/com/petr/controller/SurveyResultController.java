@@ -1,16 +1,25 @@
 package com.petr.controller;
 
+import com.petr.persistence.entity.Answer;
+import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.SurveyResult;
 import com.petr.persistence.entity.User;
+import com.petr.persistence.entity.survey.Survey;
+import com.petr.persistence.repository.QuestionRepository;
+import com.petr.persistence.repository.SurveyRepository;
 import com.petr.security.model.Role;
+import com.petr.service.answer.AnswerService;
 import com.petr.service.surveyResult.SurveyResultService;
 import com.petr.service.user.UserService;
-import com.petr.transport.dto.surveyResult.LowLevelHierarchy;
-import com.petr.transport.dto.surveyResult.SurveyResultHierarchy;
+import com.petr.transport.dto.surveyResult.SurveyResultDto;
+import com.petr.transport.dto.user.UserOutcomeDto;
+import com.petr.transport.mapper.SurveyMapper;
+import com.petr.transport.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -21,6 +30,11 @@ public class SurveyResultController {
 
     private final SurveyResultService surveyResultService;
     private final UserService userService;
+    private final AnswerService answerService;
+    private final QuestionRepository questionRepository;
+    private final SurveyRepository surveyRepository;
+    private final UserMapper userMapper;
+    private final SurveyMapper surveyMapper;
 
     @GetMapping(value = "/user/{userId}")
     public List<SurveyResult> getSurveyResultOfUser(@PathVariable("userId") Long userId){
@@ -39,14 +53,23 @@ public class SurveyResultController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value ="/users/hierarchy")
-    public List<LowLevelHierarchy> getAllHierarchy(){
-        return surveyResultService.getSurveyResultHierarchy();
-    }
 
-    @GetMapping(value = "/results/all")
-    public List<SurveyResult> getAllSurveyResults(){
-        return surveyResultService.getSurveyResultOfAll();
+    @GetMapping(value = "/users")
+    public List<UserOutcomeDto> getSurveyResults(){
+       Map<User, Integer> bonus = surveyResultService.getSurveyResultOfAll()
+               .stream()
+               .collect(Collectors.groupingBy(SurveyResult::getUser, Collectors.summingInt(SurveyResult::getBonus)));
+       Map<User, Long> countOfSurveys = surveyResultService.getSurveyResultOfAll()
+               .stream()
+               .collect(Collectors.groupingBy(SurveyResult::getUser, Collectors.counting()));
+       return bonus.keySet()
+                .stream()
+                .map(k->{
+                   UserOutcomeDto userOutcomeDto = userMapper.toDto(k);
+                        userOutcomeDto.setOwnSurveysCount(countOfSurveys.get(k));
+                        userOutcomeDto.setTotalAccountedScoring(bonus.get(k));
+                        return userOutcomeDto;
+                })
+                .collect(Collectors.toList());
     }
-
 }

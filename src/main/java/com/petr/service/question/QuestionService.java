@@ -1,5 +1,6 @@
 package com.petr.service.question;
 
+import com.petr.persistence.entity.Answer;
 import com.petr.persistence.entity.Question;
 import com.petr.persistence.entity.Status;
 import com.petr.transport.dto.question.QuestionCreateDto;
@@ -27,4 +28,6 @@ public interface QuestionService {
     void deleteQuestion(Long id);
 
     List<Long> getIdFromEntity(List<Question> questions);
+
+//    Question getQuestionByAnswer(Answer answer);
 }
