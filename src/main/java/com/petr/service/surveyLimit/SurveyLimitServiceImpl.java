@@ -6,10 +6,7 @@ import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.service.survey.SurveyService;
-import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitOutcomeDto;
+import com.petr.transport.dto.survetLimit.*;
 import com.petr.transport.mapper.SurveyLimitMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification implements SurveyLimitService {
@@ -126,5 +127,28 @@ public class SurveyLimitServiceImpl extends SurveyLimitSearchSpecification imple
         if (survey.getCount() < dto.getCount() || count >= survey.getCount()) {
             throw new SurveyLimitCountException();
         }
+    }
+
+    @Override
+    public List<SurveyLimitAggregateDto> getSurveyLimits() {
+        Map<Survey, List<SurveyLimit>> limitsGroupped = surveyLimitRepository.findAll()
+                .stream()
+                .collect(groupingBy(SurveyLimit::getSurvey, toList()));
+        return limitsGroupped.keySet().stream()
+                .map(survey -> {
+                    SurveyLimitAggregateDto surveyLimitAggregateDto = new SurveyLimitAggregateDto();
+                    surveyLimitAggregateDto.setId(survey.getId());
+                    surveyLimitAggregateDto.setSurveyName(survey.getName());
+                    surveyLimitAggregateDto.setRegion(limitsGroupped.get(survey).get(0).getLocation());
+                    surveyLimitAggregateDto.setCount(limitsGroupped.get(survey).get(0).getCount());
+                    surveyLimitAggregateDto.setGender(limitsGroupped.get(survey).stream().map(SurveyLimit::getGender).distinct().collect(toList()));
+                    List<String> ageRange =  limitsGroupped.get(survey).stream()
+                            .map(limit -> {
+                                StringBuilder ageGroup = new StringBuilder();
+                                return ageGroup.append(limit.getMinAge()).append(" - ").append(limit.getMaxAge()).toString();
+                            }).distinct().collect(toList());
+                    surveyLimitAggregateDto.setAgeRange(ageRange);
+                    return surveyLimitAggregateDto;
+                }).collect(toList());
     }
 }

@@ -2,10 +2,7 @@ package com.petr.service.surveyLimit;
 
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.SurveyLimit;
-import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitOutcomeDto;
+import com.petr.transport.dto.survetLimit.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,4 +23,6 @@ public interface SurveyLimitService {
     void setStatus(Long id, Status status);
 
     List<Long> getIdFromEntity(List<SurveyLimit> surveyLimits);
+
+    List<SurveyLimitAggregateDto> getSurveyLimits();
 }

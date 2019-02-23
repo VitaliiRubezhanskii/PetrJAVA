@@ -3,10 +3,7 @@ package com.petr.controller;
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.service.surveyLimit.SurveyLimitService;
-import com.petr.transport.dto.survetLimit.SurveyLimitCreateDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitFindDto;
-import com.petr.transport.dto.survetLimit.SurveyLimitOutcomeDto;
+import com.petr.transport.dto.survetLimit.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,11 +33,17 @@ public class SurveyLimitController {
     }
 
     //admin
+//    @GetMapping
+//    public Page<SurveyLimitOutcomeDto> getSurveys(SurveyLimitFindDto dto,
+//                                                  @PageableDefault(size = 5) Pageable pageable) {
+//        return surveyLimitService.getAll(dto, pageable);
+//    }
+
     @GetMapping
-    public Page<SurveyLimitOutcomeDto> getSurveys(SurveyLimitFindDto dto,
-                                                  @PageableDefault(size = 5) Pageable pageable) {
-        return surveyLimitService.getAll(dto, pageable);
+    public List<SurveyLimitAggregateDto> getSurveyLimits(){
+        return surveyLimitService.getSurveyLimits();
     }
+
 
     //admin
     @PostMapping("/deleted/{id}")

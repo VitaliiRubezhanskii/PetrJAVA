@@ -12,24 +12,22 @@ import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.persistence.repository.SurveyLimitRepository;
 import com.petr.persistence.repository.SurveyRepository;
-import com.petr.service.surveyLimit.SurveyLimitService;
 import com.petr.service.user.UserService;
+import com.petr.transport.dto.survetLimit.SurveyLimitAggregateDto;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
 import com.petr.transport.dto.survey.SurveyOutcomeDto;
 import com.petr.transport.mapper.SurveyMapper;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import static java.util.stream.Collectors.*;
 import java.time.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 public class SurveyServiceImpl extends SurveySearchSpecification implements SurveyService {
@@ -136,7 +134,7 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
                 .filter(limmit -> limmit.getMinAge()<=age && limmit.getMaxAge()>=age)
                 .map(limit-> limit.getSurvey())
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(toList());
 
     }
 
@@ -149,4 +147,6 @@ public class SurveyServiceImpl extends SurveySearchSpecification implements Surv
     public Survey save(Survey survey) {
         return surveyRepository.save(survey);
     }
+
+
 }

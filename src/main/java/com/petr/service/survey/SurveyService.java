@@ -3,6 +3,7 @@ package com.petr.service.survey;
 import com.petr.persistence.entity.Status;
 import com.petr.persistence.entity.User;
 import com.petr.persistence.entity.survey.Survey;
+import com.petr.transport.dto.survetLimit.SurveyLimitAggregateDto;
 import com.petr.transport.dto.survey.SurveyCreateDto;
 import com.petr.transport.dto.survey.SurveyFindDto;
 import com.petr.transport.dto.survey.SurveyOutcomeDto;
@@ -28,5 +29,8 @@ public interface SurveyService {
     List<Survey> findSurveysByUserLimit(Long userId);
 
     Map<Long, Long> getSurveyByUser(Long userId, long location);
+
     List<Survey> findAll();
+
+
 }

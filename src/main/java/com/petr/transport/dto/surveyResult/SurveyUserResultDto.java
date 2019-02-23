@@ -1,6 +1,5 @@
 package com.petr.transport.dto.surveyResult;
 
-import com.petr.persistence.entity.SurveyResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SurveyResultHierarchy {
+public class SurveyUserResultDto {
 
-    private SurveyResult surveyResult;
-    private List<SurveyResult> embeddedResults;
+    private String userFullName;
+    private String surveyName;
+    private String surveySubmissionDate;
+    private List<QuestionResultDto> questionResultDtos;
+
+
 }
-
