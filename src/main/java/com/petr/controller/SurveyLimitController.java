@@ -1,6 +1,7 @@
 package com.petr.controller;
 
 import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.service.surveyLimit.SurveyLimitService;
 import com.petr.transport.dto.survetLimit.*;
@@ -27,7 +28,7 @@ public class SurveyLimitController {
 //        return surveyLimitService.create(dto, surveyId);
 //    }
 
-    @PutMapping("/{surveyId}")
+    @PutMapping(value = "/{surveyId}")
     public List<SurveyLimit> save(@RequestBody SurveyLimitDto surveyLimitDto, @PathVariable("surveyId") Long surveyId){
         return surveyLimitService.save(surveyLimitDto, surveyId);
     }
@@ -44,21 +45,26 @@ public class SurveyLimitController {
         return surveyLimitService.getSurveyLimits();
     }
 
+    @DeleteMapping(value = "limit/{id}")
+    public void deleteAllBySurvey(@PathVariable("id") Long id){
+        surveyLimitService.deleteAllBySurvey(id);
+    }
+
 
     //admin
-    @PostMapping("/deleted/{id}")
+    @PostMapping(value = "/deleted/{id}")
     public void setDeleted(@PathVariable("id") Long id) {
         surveyLimitService.setStatus(id, Status.DELETED);
     }
 
     //admin
-    @PostMapping("/active/{id}")
+    @PostMapping(value = "/active/{id}")
     public void setActive(@PathVariable("id") Long id) {
         surveyLimitService.setStatus(id, Status.ACTIVE);
     }
 
     //admin
-    @PostMapping("/unpublish/{id}")
+    @PostMapping(value = "/unpublish/{id}")
     public void setUnpublish(@PathVariable("id") Long id) {
         surveyLimitService.setStatus(id, Status.UNPUBLISH);
     }

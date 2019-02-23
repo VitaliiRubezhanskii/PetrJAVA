@@ -1,6 +1,7 @@
 package com.petr.service.surveyLimit;
 
 import com.petr.persistence.entity.Status;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import com.petr.transport.dto.survetLimit.*;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,8 @@ public interface SurveyLimitService {
     List<Long> getIdFromEntity(List<SurveyLimit> surveyLimits);
 
     List<SurveyLimitAggregateDto> getSurveyLimits();
+
+    void deleteAllBySurvey(Long surveyId);
+
+//    long countMatchedUsers(Survey survey);
 }

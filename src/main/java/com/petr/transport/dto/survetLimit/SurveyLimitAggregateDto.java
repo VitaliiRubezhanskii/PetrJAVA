@@ -17,5 +17,6 @@ public class SurveyLimitAggregateDto {
     private List<Gender> gender;
     private List<String> ageRange;
     private int count;
+    private long matchedUsersCount;
 
 }

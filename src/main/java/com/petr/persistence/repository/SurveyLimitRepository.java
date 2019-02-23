@@ -1,6 +1,7 @@
 package com.petr.persistence.repository;
 
 import com.petr.persistence.entity.Gender;
+import com.petr.persistence.entity.survey.Survey;
 import com.petr.persistence.entity.survey.SurveyLimit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -15,5 +16,8 @@ public interface SurveyLimitRepository extends JpaRepository<SurveyLimit, Long>,
     @Query("select s from SurveyLimit s where  s.gender=:gender and s.location = :location")
     List<SurveyLimit> findLimitByLocationAnd( @Param("location") String location, @Param("gender") Gender gender );
 
+    void deleteAllBySurvey(Survey survey);
+
+    List<SurveyLimit> findSurveyLimitsBySurvey(Survey survey);
 
 }
