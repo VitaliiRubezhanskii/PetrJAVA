@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.*;
 
@@ -50,14 +52,29 @@ public class SurveyResultServiceImpl implements SurveyResultService {
                                 surveyUserResultDto.setUserFullName(user.getName() + " " + user.getMiddleName() + " " + user.getSurname());
                                 surveyUserResultDto.setSurveyName(result.getSurvey().getName());
                                 surveyUserResultDto.setSurveySubmissionDate(result.getDate().toString());
-                                List<QuestionResultDto>  questionResultDtos = answerService.findAnswersByUsers(user).stream()
+
+                                Map<String, List<QuestionResultDto>> questionaryAnswerMap = answerService.findAnswersByUsers(user).stream()
                                         .map(answer -> {
                                             QuestionResultDto questionResultDto = new QuestionResultDto();
                                             questionResultDto.setUserFullName(answer.getQuestion().getText());
                                             questionResultDto.setSurveyName(answer.getValue());
                                            return questionResultDto;
+                                        }).collect(groupingBy(QuestionResultDto::getUserFullName, toList()));
+
+                                List<QuestionResultDto> options = questionaryAnswerMap.keySet().stream()
+                                        .map(question -> {
+                                            QuestionResultDto questionResultDto = new QuestionResultDto();
+                                            questionResultDto.setUserFullName(question);
+                                            StringBuilder builder = new StringBuilder();
+                                            AtomicInteger counter = new AtomicInteger(0);
+                                            questionaryAnswerMap.get(question).stream()
+                                                    .map(QuestionResultDto::getSurveyName)
+                                                    .forEach(option -> builder.append(" ").append(counter.incrementAndGet()).append(".").append(option));
+                                            questionResultDto.setSurveyName(builder.toString());
+                                            return questionResultDto;
                                         }).collect(toList());
-                                surveyUserResultDto.setQuestionResultDtos(questionResultDtos);
+
+                                surveyUserResultDto.setQuestionResultDtos(options);
                                 return surveyUserResultDto;
                             }).collect(toList());
                     }).flatMap(List::stream)
