@@ -69,7 +69,8 @@ public class SurveyResultServiceImpl implements SurveyResultService {
                                             AtomicInteger counter = new AtomicInteger(0);
                                             questionaryAnswerMap.get(question).stream()
                                                     .map(QuestionResultDto::getSurveyName)
-                                                    .forEach(option -> builder.append(" ").append(counter.incrementAndGet()).append(".").append(option));
+                                                    .forEach(option -> builder.append(" ").append(counter.incrementAndGet())
+                                                            .append(".").append(option));
                                             questionResultDto.setSurveyName(builder.toString());
                                             return questionResultDto;
                                         }).collect(toList());
