@@ -86,7 +86,18 @@ public class SurveyResultServiceImpl implements SurveyResultService {
 
     @Override
     public List<UserOutcomeDto> getSurveyResults() {
-        Map<User, Integer> bonus = surveyResultRepository.findAll()
+        List<SurveyResult> surveyResults = surveyResultRepository.findAll();
+        return prepareSurveyResults(surveyResults);
+    }
+
+    @Override
+    public List<UserOutcomeDto> getUserSurveyResults(User user) {
+        List<SurveyResult> surveyResults = getSurveyResultByUser(user);
+        return prepareSurveyResults(surveyResults);
+    }
+
+    private List<UserOutcomeDto> prepareSurveyResults(List<SurveyResult> surveyResults){
+        Map<User, Integer> bonus =  surveyResults
                 .stream()
                 .collect(groupingBy(SurveyResult::getUser, summingInt(SurveyResult::getBonus)));
         Map<User, Long> countOfSurveys = surveyResultRepository.findAll()

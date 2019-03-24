@@ -14,6 +14,7 @@ public interface SurveyResultService {
     List<SurveyResult> getSurveyResultByUser(User user);
 
     List<UserOutcomeDto> getSurveyResults();
+    List<UserOutcomeDto> getUserSurveyResults(User user);
 
     List<SurveyUserResultDto> getAllSurveyUserResults();
 }

@@ -17,9 +17,9 @@ public class MailController {
 
     private final MailService mailService;
 
-    @PostMapping("/send")
-    public void sendEmail(@RequestBody @Valid InputMailData data
-    ) {
-        mailService.send(data);
-    }
+//    @PostMapping("/send")
+//    public void sendEmail(@RequestBody @Valid InputMailData data
+//    ) {
+//        mailService.send(data);
+//    }
 }

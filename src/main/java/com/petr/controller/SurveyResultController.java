@@ -46,4 +46,9 @@ public class SurveyResultController {
     public List<UserOutcomeDto> getSurveyResults(){
        return surveyResultService.getSurveyResults();
     }
+    @GetMapping(value = "/users/{userId}")
+    public List<UserOutcomeDto> getUserSurveyResults(@PathVariable("userId") Long userId){
+        User currentUser = userService.getById(userId);
+        return surveyResultService.getUserSurveyResults(currentUser);
+    }
 }
