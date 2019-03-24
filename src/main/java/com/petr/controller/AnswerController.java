@@ -47,6 +47,19 @@ public class AnswerController {
         return answerRepository.save(answer).getId();
     }
 
+    @PutMapping(value = "/text/{questionId}/user/{userId}")
+    public void saveTextAnswer(@RequestBody Answer answer,@PathVariable("questionId") Long questionId, @PathVariable("userId") Long userId ){
+        Question question = questionService.getById(questionId);
+        Answer answer1 = answerRepository.save(answer);
+       answer1.setQuestion(question);
+       User currentUser = userService.getById(userId);
+       List<User> users = new ArrayList<>();
+       users.add(currentUser);
+       answer1.setUsers(users);
+        answerRepository.save(answer1);
+
+    }
+
     @PostMapping(value = "/giveAnswer/{answerId}/user/{userId}")
     public void answerQuestion(@PathVariable("answerId") Long answerId,
                                @PathVariable("userId") Long userId){

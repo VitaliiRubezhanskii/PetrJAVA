@@ -35,7 +35,7 @@ public class Answer {
     @JsonIgnore
     private Question question;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name = "USER_ANSWER", joinColumns = {
             @JoinColumn(name = "ANSWER_ID") }, inverseJoinColumns = {
             @JoinColumn(name = "USER_ID") })

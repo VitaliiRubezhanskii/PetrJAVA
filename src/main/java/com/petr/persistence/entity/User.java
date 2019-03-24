@@ -113,14 +113,14 @@ public class User implements Serializable {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_ROLES", joinColumns = {
             @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
             @JoinColumn(name = "ROLE_ID") })
     private Set<Role> roles;
 
 
-    @ManyToMany(mappedBy = "users", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.MERGE})
     @JsonIgnore
     private List<Answer> answers;
 
